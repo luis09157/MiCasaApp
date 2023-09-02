@@ -3,12 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="10dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         app:cardCornerRadius="15dp"
-        android:layout_margin="10dp"
         android:layout_height="200dp"
         tools:ignore="MissingConstraints">
         <LinearLayout
@@ -31,14 +31,18 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
+                android:textStyle="bold"
+                android:textSize="19dp"
+                android:textColor="#000000"
                 android:text="Titulo"></TextView>
             <TextView
                 android:id="@+id/txtDescription"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:visibility="gone"
                 android:layout_weight="1"
-                android:layout_margin="5dp"
                 android:singleLine="true"
+                android:layout_margin="10dp"
                 android:text="Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500"></TextView>
 
         </LinearLayout>
