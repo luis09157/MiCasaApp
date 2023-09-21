@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.example.micasaapp.Adapter.CategoriaAdapter
 import com.example.micasaapp.Adapter.TrabajadorAdapter
 import com.example.micasaapp.Model.CategoriaModel
 import com.example.micasaapp.R
@@ -41,7 +40,7 @@ class TrabajadoresFragment  : Fragment() {
     }
 
     fun llenarCategorias(){
-        listCategorias.add(CategoriaModel("Carpinteria","Lorem Ipsum es simplemente el texto de relleno de las imprentas", R.drawable.carpinteria))
+        listCategorias.add(CategoriaModel("Carpinteria","Lorem Ipsum es simplemente el texto de relleno de las imprentas", R.drawable.carpintero))
         listCategorias.add(
             CategoriaModel("Electricista","Lorem Ipsum es simplemente el texto de relleno de las imprentas",
                 R.drawable.electricista)
@@ -52,11 +51,11 @@ class TrabajadoresFragment  : Fragment() {
         )
         listCategorias.add(
             CategoriaModel("Plomeria","Lorem Ipsum es simplemente el texto de relleno de las imprentas",
-                R.drawable.plomeria)
+                R.drawable.plomero)
         )
         listCategorias.add(
             CategoriaModel("Pintura","Lorem Ipsum es simplemente el texto de relleno de las imprentas",
-                R.drawable.pinto)
+                R.drawable.pintura)
         )
         listCategorias.add(
             CategoriaModel("Soldadores","Lorem Ipsum es simplemente el texto de relleno de las imprentas",
@@ -68,7 +67,7 @@ class TrabajadoresFragment  : Fragment() {
         )
         listCategorias.add(
             CategoriaModel("Fumigadores","Lorem Ipsum es simplemente el texto de relleno de las imprentas",
-                R.drawable.fumigador)
+                R.drawable.albanil)
         )
     }
 }

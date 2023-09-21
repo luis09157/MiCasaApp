@@ -40,14 +40,25 @@ class CategoriasFragment : Fragment() {
     }
 
     fun llenarCategorias(){
-        listCategorias.add(CategoriaModel("Carpinteria","Lorem Ipsum es simplemente el texto de relleno de las imprentas", R.drawable.carpinteria))
-        listCategorias.add(CategoriaModel("Electricista","Lorem Ipsum es simplemente el texto de relleno de las imprentas",R.drawable.electricista))
-        listCategorias.add(CategoriaModel("Construccion","Lorem Ipsum es simplemente el texto de relleno de las imprentas",R.drawable.albanil))
-        listCategorias.add(CategoriaModel("Plomeria","Lorem Ipsum es simplemente el texto de relleno de las imprentas",R.drawable.plomeria))
-        listCategorias.add(CategoriaModel("Pintura","Lorem Ipsum es simplemente el texto de relleno de las imprentas",R.drawable.pinto))
-        listCategorias.add(CategoriaModel("Soldadores","Lorem Ipsum es simplemente el texto de relleno de las imprentas",R.drawable.soldador))
-        listCategorias.add(CategoriaModel("Gas","Lorem Ipsum es simplemente el texto de relleno de las imprentas",R.drawable.gas))
-        listCategorias.add(CategoriaModel("Fumigadores","Lorem Ipsum es simplemente el texto de relleno de las imprentas",R.drawable.fumigador))
+        listCategorias.add(CategoriaModel("ALBAÑILERIA","Lorem Ipsum es simplemente el texto de relleno de las imprentas", R.drawable.albanil))
+        listCategorias.add(CategoriaModel("PLOMERIA","Lorem Ipsum es simplemente el texto de relleno de las imprentas",R.drawable.plomero))
+        listCategorias.add(CategoriaModel("TECNICO EN A/C Y REFRIGERACION","Lorem Ipsum es simplemente el texto de relleno de las imprentas",R.drawable.climas))
+        listCategorias.add(CategoriaModel("SOLDADOR","Lorem Ipsum es simplemente el texto de relleno de las imprentas",R.drawable.soldador))
+        listCategorias.add(CategoriaModel("TABLAROCA","Lorem Ipsum es simplemente el texto de relleno de las imprentas",R.drawable.tablaroca))
+        listCategorias.add(CategoriaModel("SISTEMAS DE SEGURIDAD","Lorem Ipsum es simplemente el texto de relleno de las imprentas",R.drawable.seguridad))
+        listCategorias.add(CategoriaModel("ARQUITECTOS ","Lorem Ipsum es simplemente el texto de relleno de las imprentas",R.drawable.arquitecto))
+        listCategorias.add(CategoriaModel("DECORADORES DEL HOGAR","Lorem Ipsum es simplemente el texto de relleno de las imprentas",R.drawable.decoradores))
+        listCategorias.add(CategoriaModel("FUGAS DE GAS","Lorem Ipsum es simplemente el texto de relleno de las imprentas",R.drawable.gas))
+        listCategorias.add(CategoriaModel("VENTANAS Y MARCOS","Lorem Ipsum es simplemente el texto de relleno de las imprentas",R.drawable.ventanas))
+        listCategorias.add(CategoriaModel("TRABAJADORAS DEL HOGAR","Lorem Ipsum es simplemente el texto de relleno de las imprentas",R.drawable.limpieza_hogar))
+        listCategorias.add(CategoriaModel("PINTURA","Lorem Ipsum es simplemente el texto de relleno de las imprentas",R.drawable.pintura))
+        listCategorias.add(CategoriaModel("ELECTRICISTA","Lorem Ipsum es simplemente el texto de relleno de las imprentas",R.drawable.electricista))
+        listCategorias.add(CategoriaModel("CARPINTERO","Lorem Ipsum es simplemente el texto de relleno de las imprentas",R.drawable.carpintero))
+        listCategorias.add(CategoriaModel("JARDINEROS","Lorem Ipsum es simplemente el texto de relleno de las imprentas",R.drawable.jardinero))
+        listCategorias.add(CategoriaModel("MECANICOS","Lorem Ipsum es simplemente el texto de relleno de las imprentas",R.drawable.vulcanizadora))
+        listCategorias.add(CategoriaModel("CERRAJERIA","Lorem Ipsum es simplemente el texto de relleno de las imprentas",R.drawable.cerrajeria))
+        listCategorias.add(CategoriaModel("HERREROS","Lorem Ipsum es simplemente el texto de relleno de las imprentas",R.drawable.herreros))
+        listCategorias.add(CategoriaModel("TAPICERIA DE SALAS Y SILLAS","Lorem Ipsum es simplemente el texto de relleno de las imprentas",R.drawable.tapiceria))
     }
 
     override fun onDestroyView() {
