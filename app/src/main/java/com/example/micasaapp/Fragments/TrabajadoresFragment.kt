@@ -2,9 +2,11 @@ package com.example.micasaapp.Fragments
 
 import android.os.Bundle
 import android.util.Log
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.micasaapp.Adapter.TrabajadorAdapter
 import com.example.micasaapp.Model.CategoriaModel
@@ -33,9 +35,23 @@ class TrabajadoresFragment  : Fragment() {
         binding.listTrabajadores.divider = null
         binding.listTrabajadores.setOnItemClickListener { adapterView, view, i, l ->
 
-            UtilHelper.replaceFragment(requireContext(),TrabajadoresFragment())
-            Log.e("holaquetal","vamos perros")
+            UtilHelper.replaceFragment(requireContext(),TrabajadorDetalleFragment())
+            Toast.makeText(requireContext(),"vamos perros",Toast.LENGTH_SHORT).show()
 
+        }
+    }
+    override fun onResume() {
+        super.onResume()
+        if (view == null) {
+            return
+        }
+        requireView().isFocusableInTouchMode = true
+        requireView().requestFocus()
+        requireView().setOnKeyListener { v, keyCode, event ->
+            if (event.action == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
+                UtilHelper.replaceFragment(requireContext(),CategoriasFragment())
+                true
+            } else false
         }
     }
 
