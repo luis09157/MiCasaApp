@@ -31,23 +31,14 @@
                 android:id="@+id/txtTitulo"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_margin="10dp"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:textStyle="bold"
                 android:textSize="17dp"
-                android:maxLines="1"
+                android:maxLines="2"
                 android:textColor="#000000"
                 android:text="Titulo"></TextView>
-            <TextView
-                android:id="@+id/txtDescription"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:maxLines="1"
-                android:layout_weight="1"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:singleLine="true"
-                android:text="Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500"></TextView>
 
         </LinearLayout>
 

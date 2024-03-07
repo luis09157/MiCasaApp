@@ -1,7 +1,6 @@
 package com.example.micasaapp.Fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -10,9 +9,9 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.micasaapp.Adapter.TrabajadorAdapter
 import com.example.micasaapp.Model.CategoriaModel
-import com.example.micasaapp.R
+import com.ninodev.micasaapp.R
 import com.example.micasaapp.Util.UtilHelper
-import com.example.micasaapp.databinding.FragmentTrabajadoresBinding
+import com.ninodev.micasaapp.databinding.FragmentTrabajadoresBinding
 
 class TrabajadoresFragment  : Fragment() {
     private var _binding: FragmentTrabajadoresBinding? = null

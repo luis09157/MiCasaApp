@@ -11,13 +11,13 @@
         app:lottie_autoPlay="true"
         android:background="@color/white"
         app:lottie_loop="true"
-        android:visibility="visible" />
+        android:visibility="gone" />
 
     <GridView
         android:id="@+id/listCategoria"
         android:background="@color/background_color"
         android:layout_width="match_parent"
-        android:visibility="gone"
+        android:visibility="visible"
         android:layout_height="match_parent"
         android:numColumns="2" />
 

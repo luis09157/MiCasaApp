@@ -5,7 +5,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
-import com.example.micasaapp.R
+import com.example.micasaapp.Api.DataConfig
+import com.ninodev.micasaapp.R
 
 
 class UtilHelper{
@@ -20,5 +21,11 @@ class UtilHelper{
             ft.replace(R.id.content_main, fragment)
             ft.commit()
         }
+
+        fun obtenerImagenPorCategoria(categoriaId: Int): Int? {
+            val categoria = DataConfig.LISTACATEGORIAS.find { it.idCategoria == categoriaId }
+            return categoria?.drawableResId
+        }
+
     }
 }

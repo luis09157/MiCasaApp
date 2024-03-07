@@ -11,9 +11,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.micasaapp.Adapter.ImageAdapter
-import com.example.micasaapp.R
+import com.ninodev.micasaapp.R
 import com.example.micasaapp.Util.UtilHelper
-import com.example.micasaapp.databinding.FragmentTrabajadorDetalleDetalleBinding
+import com.ninodev.micasaapp.databinding.FragmentTrabajadorDetalleDetalleBinding
 
 class TrabajadorDetalleFragment : Fragment() {
     private var _binding: FragmentTrabajadorDetalleDetalleBinding? = null

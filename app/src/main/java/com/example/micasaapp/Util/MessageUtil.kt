@@ -1,25 +1,34 @@
 package com.example.micasaapp.Util
 
+import android.content.Context
 import android.view.View
+import androidx.core.content.ContextCompat
+import com.ninodev.micasaapp.R
 import com.google.android.material.snackbar.Snackbar
 
 object MessageUtil {
-    fun showSuccessMessage(view: View, message: String) {
-        showMessage(view, message, Snackbar.LENGTH_SHORT, android.R.color.holo_green_dark)
+    fun showSuccessMessage(context: Context, view: View, message: String) {
+        showMessage(context, view, message, Snackbar.LENGTH_SHORT, R.color.successColor)
     }
 
-    fun showInfoMessage(view: View, message: String) {
-        showMessage(view, message, Snackbar.LENGTH_SHORT, android.R.color.holo_blue_light)
+    fun showInfoMessage(context: Context, view: View, message: String) {
+        showMessage(context, view, message, Snackbar.LENGTH_SHORT, R.color.infoColor)
     }
 
-    fun showErrorMessage(view: View, message: String) {
-        showMessage(view, message, Snackbar.LENGTH_LONG, android.R.color.holo_red_light)
+    fun showErrorMessage(context: Context, view: View, message: String) {
+        showMessage(context, view, message, Snackbar.LENGTH_LONG, R.color.errorColor)
     }
 
-    private fun showMessage(view: View, message: String, duration: Int, backgroundColor: Int) {
+    private fun showMessage(
+        context: Context,
+        view: View,
+        message: String,
+        duration: Int,
+        backgroundColor: Int
+    ) {
         val snackbar = Snackbar.make(view, message, duration)
         val snackbarView = snackbar.view
-        snackbarView.setBackgroundResource(backgroundColor)
+        snackbarView.setBackgroundColor(ContextCompat.getColor(context, backgroundColor))
         snackbar.show()
     }
 }

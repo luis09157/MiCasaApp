@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import com.example.micasaapp.Model.CategoriaModel
-import com.example.micasaapp.R
+import com.ninodev.micasaapp.R
 
 class TrabajadorAdapter(context: Context, val listCategorias: List<CategoriaModel>) : BaseAdapter() {
     private val layoutInflater = LayoutInflater.from(context)

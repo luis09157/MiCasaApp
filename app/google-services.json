@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "883457631599",
+    "project_id": "micasaapp-5be6c",
+    "storage_bucket": "micasaapp-5be6c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:883457631599:android:c74b13dede45b77e43349a",
+        "android_client_info": {
+          "package_name": "com.ninodev.micasaapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBGcwQUyYiASf_4JOKydbUCB_XiaBivqtA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

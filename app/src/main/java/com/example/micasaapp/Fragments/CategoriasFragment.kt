@@ -8,16 +8,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.airbnb.lottie.LottieAnimationView
 import com.example.micasaapp.Adapter.CategoriaAdapter
 import com.example.micasaapp.Api.ApiClient
 import com.example.micasaapp.Api.Config
 import com.example.micasaapp.Data.CategoriasModel
-import com.example.micasaapp.Model.CategoriaModel
-import com.example.micasaapp.R
+import com.ninodev.micasaapp.R
 import com.example.micasaapp.Util.MessageUtil
 import com.example.micasaapp.Util.NetworkErrorUtil
-import com.example.micasaapp.databinding.FragmentCategoriasBinding
+import com.ninodev.micasaapp.databinding.FragmentCategoriasBinding
 
 class CategoriasFragment : Fragment() {
 
@@ -92,13 +90,14 @@ class CategoriasFragment : Fragment() {
                 listCategoriasMoshi.addAll(result)
                 val categoriaAdapter = CategoriaAdapter(requireContext(), listCategoriasMoshi)
                 binding.listCategoria.adapter = categoriaAdapter
-                MessageUtil.showSuccessMessage(requireView(), "¡Operación exitosa!")
+                //MessageUtil.showSuccessMessage(requireContext() ,requireView(), "¡Operación exitosa!")
+               // DialogUtil.showSuccessDialog(requireContext(), "Error", "Error al cargar las categorías")
             } else {
                 // Handle error
                 val exception = Exception("Error obteniendo categorías")
                 val errorMessage = NetworkErrorUtil.handleNetworkError(exception)
                 Log.e("FetchCategoriasTask", "Error fetching categorias: $errorMessage", exception)
-                MessageUtil.showErrorMessage(requireView(), "Error al cargar las categorías")
+                MessageUtil.showErrorMessage(requireContext(), requireView(), "Error al cargar las categorías")
 
                 // Puedes mostrar el mensaje de error al usuario, por ejemplo, mediante un Toast o un AlertDialog
             }
