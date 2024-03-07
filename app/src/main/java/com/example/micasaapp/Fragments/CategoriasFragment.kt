@@ -1,5 +1,6 @@
 package com.example.micasaapp.Fragments
 
+import android.os.AsyncTask
 import android.os.Bundle
 import android.util.Log
 import android.view.KeyEvent
@@ -7,65 +8,55 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.airbnb.lottie.LottieAnimationView
 import com.example.micasaapp.Adapter.CategoriaAdapter
+import com.example.micasaapp.Api.ApiClient
+import com.example.micasaapp.Api.Config
+import com.example.micasaapp.Data.CategoriasModel
 import com.example.micasaapp.Model.CategoriaModel
 import com.example.micasaapp.R
-import com.example.micasaapp.Util.UtilHelper
+import com.example.micasaapp.Util.MessageUtil
+import com.example.micasaapp.Util.NetworkErrorUtil
 import com.example.micasaapp.databinding.FragmentCategoriasBinding
 
 class CategoriasFragment : Fragment() {
 
     private var _binding: FragmentCategoriasBinding? = null
     private val binding get() = _binding!!
-    private var listCategorias : MutableList<CategoriaModel> = mutableListOf()
+    private var listCategoriasMoshi: MutableList<CategoriasModel> = mutableListOf()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         _binding = FragmentCategoriasBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        llenarCategorias()
-        getCategoriaAdapter()
+        showLoadingAnimation()
+
+        FetchCategoriasTask().execute()
 
         return root
     }
 
-    fun getCategoriaAdapter(){
-        val categoriaAdapter = CategoriaAdapter(requireContext(), listCategorias)
-        binding.listCategoria.adapter = categoriaAdapter
-        binding.listCategoria.setOnItemClickListener { adapterView, view, i, l ->
-
-            UtilHelper.replaceFragment(requireContext(),TrabajadoresFragment())
-            Log.e("holaquetal","vamos perros")
-
-        }
+    private fun showLoadingAnimation() {
+        binding.lottieAnimationView.visibility = View.VISIBLE
+        binding.listCategoria.visibility = View.GONE
+        binding.lottieAnimationView.setAnimation(R.raw.avionsito_loading) // Reemplaza con tu archivo JSON
+        binding.lottieAnimationView.playAnimation()
     }
 
-    fun llenarCategorias(){
-        listCategorias.add(CategoriaModel("ALBAÑILERIA","Lorem Ipsum es simplemente el texto de relleno de las imprentas", R.drawable.albanil))
-        listCategorias.add(CategoriaModel("PLOMERIA","Lorem Ipsum es simplemente el texto de relleno de las imprentas",R.drawable.plomero))
-        listCategorias.add(CategoriaModel("TECNICO EN A/C Y REFRIGERACION","Lorem Ipsum es simplemente el texto de relleno de las imprentas",R.drawable.climas))
-        listCategorias.add(CategoriaModel("SOLDADOR","Lorem Ipsum es simplemente el texto de relleno de las imprentas",R.drawable.soldador))
-        listCategorias.add(CategoriaModel("TABLAROCA","Lorem Ipsum es simplemente el texto de relleno de las imprentas",R.drawable.tablaroca))
-        listCategorias.add(CategoriaModel("SISTEMAS DE SEGURIDAD","Lorem Ipsum es simplemente el texto de relleno de las imprentas",R.drawable.seguridad))
-        listCategorias.add(CategoriaModel("ARQUITECTOS ","Lorem Ipsum es simplemente el texto de relleno de las imprentas",R.drawable.arquitecto))
-        listCategorias.add(CategoriaModel("DECORADORES DEL HOGAR","Lorem Ipsum es simplemente el texto de relleno de las imprentas",R.drawable.decoradores))
-        listCategorias.add(CategoriaModel("FUGAS DE GAS","Lorem Ipsum es simplemente el texto de relleno de las imprentas",R.drawable.gas))
-        listCategorias.add(CategoriaModel("VENTANAS Y MARCOS","Lorem Ipsum es simplemente el texto de relleno de las imprentas",R.drawable.ventanas))
-        listCategorias.add(CategoriaModel("TRABAJADORAS DEL HOGAR","Lorem Ipsum es simplemente el texto de relleno de las imprentas",R.drawable.limpieza_hogar))
-        listCategorias.add(CategoriaModel("PINTURA","Lorem Ipsum es simplemente el texto de relleno de las imprentas",R.drawable.pintura))
-        listCategorias.add(CategoriaModel("ELECTRICISTA","Lorem Ipsum es simplemente el texto de relleno de las imprentas",R.drawable.electricista))
-        listCategorias.add(CategoriaModel("CARPINTERO","Lorem Ipsum es simplemente el texto de relleno de las imprentas",R.drawable.carpintero))
-        listCategorias.add(CategoriaModel("JARDINEROS","Lorem Ipsum es simplemente el texto de relleno de las imprentas",R.drawable.jardinero))
-        listCategorias.add(CategoriaModel("MECANICOS","Lorem Ipsum es simplemente el texto de relleno de las imprentas",R.drawable.vulcanizadora))
-        listCategorias.add(CategoriaModel("CERRAJERIA","Lorem Ipsum es simplemente el texto de relleno de las imprentas",R.drawable.cerrajeria))
-        listCategorias.add(CategoriaModel("HERREROS","Lorem Ipsum es simplemente el texto de relleno de las imprentas",R.drawable.herreros))
-        listCategorias.add(CategoriaModel("TAPICERIA DE SALAS Y SILLAS","Lorem Ipsum es simplemente el texto de relleno de las imprentas",R.drawable.tapiceria))
+    private fun hideLoadingAnimation() {
+        binding.lottieAnimationView.visibility = View.GONE
+        binding.listCategoria.visibility = View.VISIBLE
+        binding.lottieAnimationView.cancelAnimation()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
+
     override fun onResume() {
         super.onResume()
         if (view == null) {
@@ -77,6 +68,40 @@ class CategoriasFragment : Fragment() {
             if (event.action == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
                 true
             } else false
+        }
+    }
+
+    private inner class FetchCategoriasTask : AsyncTask<Void, Void, List<CategoriasModel>>() {
+
+        override fun doInBackground(vararg params: Void?): List<CategoriasModel>? {
+            return try {
+                val apiClient = ApiClient(Config._URLApi)
+                apiClient.getCategorias()
+            } catch (e: Exception) {
+                null
+            }
+        }
+
+        override fun onPostExecute(result: List<CategoriasModel>?) {
+            super.onPostExecute(result)
+
+            hideLoadingAnimation()
+
+            if (result != null) {
+                // Actualiza la interfaz de usuario con las categorías obtenidas
+                listCategoriasMoshi.addAll(result)
+                val categoriaAdapter = CategoriaAdapter(requireContext(), listCategoriasMoshi)
+                binding.listCategoria.adapter = categoriaAdapter
+                MessageUtil.showSuccessMessage(requireView(), "¡Operación exitosa!")
+            } else {
+                // Handle error
+                val exception = Exception("Error obteniendo categorías")
+                val errorMessage = NetworkErrorUtil.handleNetworkError(exception)
+                Log.e("FetchCategoriasTask", "Error fetching categorias: $errorMessage", exception)
+                MessageUtil.showErrorMessage(requireView(), "Error al cargar las categorías")
+
+                // Puedes mostrar el mensaje de error al usuario, por ejemplo, mediante un Toast o un AlertDialog
+            }
         }
     }
 }

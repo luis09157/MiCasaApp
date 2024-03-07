@@ -8,10 +8,10 @@ import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
-import com.example.micasaapp.Model.CategoriaModel
+import com.example.micasaapp.Data.CategoriasModel
 import com.example.micasaapp.R
 
-class CategoriaAdapter(context: Context, val listCategorias: List<CategoriaModel>) : BaseAdapter() {
+class CategoriaAdapter(context: Context, val listCategorias: MutableList<CategoriasModel>) : BaseAdapter() {
     private val layoutInflater = LayoutInflater.from(context)
     private val context = context
 
@@ -34,9 +34,9 @@ class CategoriaAdapter(context: Context, val listCategorias: List<CategoriaModel
             viewHolder = rowView.tag as ViewHolder
         }
 
-        viewHolder.txtTitulo.text = listCategorias.get(position).nombre
-        viewHolder.txtDescripcion.text = listCategorias.get(position).descripcion
-        viewHolder.imgPortada.setImageDrawable(ContextCompat.getDrawable(context, listCategorias.get(position).imgPortada))
+        viewHolder.txtTitulo.text = listCategorias.get(position).nombreCategoria
+        //viewHolder.txtDescripcion.text = listCategorias.get(position).descripcion
+        //viewHolder.imgPortada.setImageDrawable(ContextCompat.getDrawable(context, listCategorias.get(position).imgPortada))
 
 
         return rowView
