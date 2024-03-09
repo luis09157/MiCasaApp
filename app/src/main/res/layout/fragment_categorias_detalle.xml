@@ -17,8 +17,9 @@
         app:lottie_loop="true"
         android:visibility="gone" />
 
+
     <LinearLayout
-        android:id="@+id/cont_categorias"
+        android:id="@+id/contSubCategorias"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -49,13 +50,11 @@
 
 
         <GridView
-            android:id="@+id/listCategoria"
+            android:id="@+id/listSubCategoriaDetalle"
             android:background="@color/background_color"
             android:layout_width="match_parent"
             android:visibility="visible"
             android:layout_height="match_parent"
             android:numColumns="2" />
     </LinearLayout>
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

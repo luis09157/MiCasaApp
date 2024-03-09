@@ -5,6 +5,7 @@ import com.ninodev.micasaapp.R
 
 class DataConfig {
     companion object{
+        var IDCATEGORIA = 0
         val LISTACATEGORIAS = listOf(
             CategoriaConDrawable(1, R.drawable.albanil),
             CategoriaConDrawable(2, R.drawable.plomero),
