@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import android.widget.SearchView
 import com.example.micasaapp.Adapter.SubCategoriaAdapter
 import com.example.micasaapp.Api.ApiClient
 import com.example.micasaapp.Api.Config
@@ -23,6 +24,7 @@ class CategoriasDetalleFragment : Fragment() {
     private var _binding: FragmentCategoriasDetalleBinding? = null
     private val binding get() = _binding!!
     private var listSubCategoriasMoshi: MutableList<SubCategoriasModel> = mutableListOf()
+    private lateinit var subCategoriaAdapter: SubCategoriaAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -53,7 +55,7 @@ class CategoriasDetalleFragment : Fragment() {
         binding.fragmentNoData.contNoData.visibility = View.GONE
     }
 
-    private fun showNodata(){
+    private fun showNodata() {
         binding.lottieAnimationView.visibility = View.GONE
         binding.contSubCategorias.visibility = View.GONE
         binding.lottieAnimationView.cancelAnimation()
@@ -74,7 +76,7 @@ class CategoriasDetalleFragment : Fragment() {
         requireView().requestFocus()
         requireView().setOnKeyListener { v, keyCode, event ->
             if (event.action == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
-                UtilHelper.replaceFragment(requireContext(), CategoriasFragment())
+                requireActivity().onBackPressed()
                 true
             } else false
         }
@@ -82,16 +84,18 @@ class CategoriasDetalleFragment : Fragment() {
 
     private inner class FetchSubCategoriasTask : AsyncTask<Void, Void, List<SubCategoriasModel>>() {
 
+        private lateinit var originalSubCategoriasList: List<SubCategoriasModel>
+
         override fun doInBackground(vararg params: Void?): List<SubCategoriasModel>? {
             try {
                 val apiClient = ApiClient(Config._URLApi)
-                return apiClient.getSubCategorias()
+                originalSubCategoriasList = apiClient.getSubCategorias() ?: emptyList()
+                return originalSubCategoriasList
             } catch (e: Exception) {
-                Log.e("Error","Error: ${e.message}")
+                Log.e("Error", "Error: ${e.message}")
                 showNodata()
                 return null
             }
-
         }
 
         override fun onPostExecute(result: List<SubCategoriasModel>?) {
@@ -101,18 +105,31 @@ class CategoriasDetalleFragment : Fragment() {
 
             if (result != null) {
                 listSubCategoriasMoshi.addAll(result)
-                if(listSubCategoriasMoshi.size > 0){
-                    val subCategoriaAdapter = SubCategoriaAdapter(requireContext(), listSubCategoriasMoshi)
+                if (listSubCategoriasMoshi.isNotEmpty()) {
+                    // Configurar el adaptador con la lista original
+                    subCategoriaAdapter = SubCategoriaAdapter(requireContext(), originalSubCategoriasList)
                     binding.listSubCategoriaDetalle.adapter = subCategoriaAdapter
-                }else{
+
+                    // Configurar el SearchView
+                    binding.searchSubCategoria.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                        override fun onQueryTextSubmit(query: String?): Boolean {
+                            return false
+                        }
+
+                        override fun onQueryTextChange(newText: String?): Boolean {
+                            subCategoriaAdapter.filter(newText.orEmpty())
+                            return true
+                        }
+                    })
+                } else {
                     showNodata()
                 }
             } else {
                 // Handle error
-                val exception = Exception("Error obteniendo categorías")
+                val exception = Exception("Error obteniendo subcategorías")
                 val errorMessage = NetworkErrorUtil.handleNetworkError(exception)
-                Log.e("FetchCategoriasTask", "Error fetching categorias: $errorMessage", exception)
-                MessageUtil.showErrorMessage(requireContext(), requireView(), "Error al cargar las categorías")
+                Log.e("FetchSubCategoriasTask", "Error fetching subcategorias: $errorMessage", exception)
+                MessageUtil.showErrorMessage(requireContext(), requireView(), "Error al cargar las subcategorías")
 
                 showNodata()
             }

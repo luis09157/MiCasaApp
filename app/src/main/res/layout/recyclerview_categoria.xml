@@ -9,7 +9,7 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         app:cardCornerRadius="15dp"
-        android:layout_height="200dp"
+        android:layout_height="150dp"
         app:cardBackgroundColor="@color/white"
         tools:ignore="MissingConstraints">
         <LinearLayout
@@ -20,19 +20,19 @@
 
             <ImageView
                 android:id="@+id/imgPortada"
-                android:layout_width="125dp"
-                android:layout_height="125dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_margin="5dp"
-                android:scaleType="centerCrop"
+                android:scaleType="centerInside"
+                android:layout_weight="1"
                 android:src="@drawable/carpintero">
 
             </ImageView>
             <TextView
                 android:id="@+id/txtTitulo"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:layout_weight="1"
                 android:gravity="center"
                 android:textStyle="bold"
                 android:textSize="17dp"

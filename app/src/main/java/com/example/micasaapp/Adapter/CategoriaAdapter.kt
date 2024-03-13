@@ -12,48 +12,53 @@ import com.example.micasaapp.Data.CategoriasModel
 import com.example.micasaapp.Util.UtilHelper.Companion.obtenerImagenPorCategoria
 import com.ninodev.micasaapp.R
 
-class CategoriaAdapter(context: Context, val listCategorias: MutableList<CategoriasModel>) : BaseAdapter() {
-    private val layoutInflater = LayoutInflater.from(context)
-    private val context = context
+class CategoriaAdapter(private val context: Context, private var categorias: List<CategoriasModel>) : BaseAdapter() {
+    private var filteredCategorias: List<CategoriasModel> = categorias
 
-    override fun getCount(): Int {
-        return listCategorias.size
+    fun filter(query: String) {
+        filteredCategorias = if (query.isBlank()) {
+            categorias
+        } else {
+            categorias.filter { it.nombreCategoria.contains(query, ignoreCase = true) }
+        }
+        notifyDataSetChanged()
     }
 
-    override fun getView(position: Int, view: View?, viewGroup: ViewGroup?): View? {
+    override fun getCount(): Int {
+        return filteredCategorias.size
+    }
+
+    override fun getView(position: Int, view: View?, viewGroup: ViewGroup?): View {
         val viewHolder: ViewHolder
         val rowView: View?
 
         if (view == null) {
-            rowView = layoutInflater.inflate(R.layout.recyclerview_categoria, viewGroup, false)
-
+            rowView = LayoutInflater.from(context).inflate(R.layout.recyclerview_categoria, viewGroup, false)
             viewHolder = ViewHolder(rowView)
             rowView.tag = viewHolder
-
         } else {
             rowView = view
             viewHolder = rowView.tag as ViewHolder
         }
 
+        with(filteredCategorias[position]) {
+            viewHolder.txtTitulo.text = nombreCategoria
+            viewHolder.imgPortada.setImageDrawable(ContextCompat.getDrawable(context, obtenerImagenPorCategoria(idCategoria)!!))
+        }
 
-        viewHolder.txtTitulo.text = listCategorias.get(position).nombreCategoria
-        viewHolder.imgPortada.setImageDrawable(ContextCompat.getDrawable(
-            context, obtenerImagenPorCategoria(listCategorias.get(position).idCategoria)!!))
-
-
-        return rowView
+        return rowView!!
     }
 
     override fun getItem(position: Int): Any {
-        return 0
+        return filteredCategorias[position]
     }
 
     override fun getItemId(position: Int): Long {
-        return 0
+        return position.toLong()
     }
 
-    private class ViewHolder(view: View?) {
-        val txtTitulo = view?.findViewById(R.id.txtTitulo) as TextView
-        val imgPortada = view?.findViewById(R.id.imgPortada) as ImageView
+    private class ViewHolder(view: View) {
+        val txtTitulo: TextView = view.findViewById(R.id.txtTitulo)
+        val imgPortada: ImageView = view.findViewById(R.id.imgPortada)
     }
 }

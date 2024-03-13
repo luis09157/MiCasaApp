@@ -1,5 +1,4 @@
 package com.example.micasaapp.Adapter
-
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -9,53 +8,56 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.example.micasaapp.Model.SubCategoriasModel
-import com.example.micasaapp.Util.UtilHelper
+import com.example.micasaapp.Util.UtilHelper.Companion.obtenerImagenPorCategoria
 import com.ninodev.micasaapp.R
 
+class SubCategoriaAdapter(private val context: Context, private var subCategorias: List<SubCategoriasModel>) : BaseAdapter() {
+    private var filteredSubCategorias: List<SubCategoriasModel> = subCategorias
 
-class SubCategoriaAdapter(context: Context, val listSubCategorias: MutableList<SubCategoriasModel>) : BaseAdapter() {
-    private val layoutInflater = LayoutInflater.from(context)
-    private val context = context
-
-    override fun getCount(): Int {
-        return listSubCategorias.size
+    fun filter(query: String) {
+        filteredSubCategorias = if (query.isBlank()) {
+            subCategorias
+        } else {
+            subCategorias.filter { it.nombreSubcategoria.contains(query, ignoreCase = true) }
+        }
+        notifyDataSetChanged()
     }
 
-    override fun getView(position: Int, view: View?, viewGroup: ViewGroup?): View? {
+    override fun getCount(): Int {
+        return filteredSubCategorias.size
+    }
+
+    override fun getView(position: Int, view: View?, viewGroup: ViewGroup?): View {
         val viewHolder: ViewHolder
         val rowView: View?
 
         if (view == null) {
-            rowView = layoutInflater.inflate(R.layout.recyclerview_categoria, viewGroup, false)
-
+            rowView = LayoutInflater.from(context).inflate(R.layout.recyclerview_categoria, viewGroup, false)
             viewHolder = ViewHolder(rowView)
             rowView.tag = viewHolder
-
         } else {
             rowView = view
             viewHolder = rowView.tag as ViewHolder
         }
 
+        with(filteredSubCategorias[position]) {
+            viewHolder.txtTitulo.text = nombreSubcategoria
+            viewHolder.imgPortada.setImageDrawable(ContextCompat.getDrawable(context, obtenerImagenPorCategoria(idCategoria)!!))
+        }
 
-        viewHolder.txtTitulo.text = listSubCategorias.get(position).nombreSubcategoria
-        viewHolder.imgPortada.setImageDrawable(
-            ContextCompat.getDrawable(
-            context, UtilHelper.obtenerImagenPorCategoria(listSubCategorias.get(position).idCategoria)!!))
-
-
-        return rowView
+        return rowView!!
     }
 
     override fun getItem(position: Int): Any {
-        return 0
+        return filteredSubCategorias[position]
     }
 
     override fun getItemId(position: Int): Long {
-        return 0
+        return position.toLong()
     }
 
-    private class ViewHolder(view: View?) {
-        val txtTitulo = view?.findViewById(R.id.txtTitulo) as TextView
-        val imgPortada = view?.findViewById(R.id.imgPortada) as ImageView
+    private class ViewHolder(view: View) {
+        val txtTitulo: TextView = view.findViewById(R.id.txtTitulo)
+        val imgPortada: ImageView = view.findViewById(R.id.imgPortada)
     }
 }

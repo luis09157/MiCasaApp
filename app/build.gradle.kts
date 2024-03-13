@@ -16,8 +16,8 @@ android {
         applicationId = "com.ninodev.micasaapp"
         minSdk = 24
         targetSdk = 33
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 3
+        versionName = "2.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -60,5 +60,10 @@ dependencies {
 
     implementation(platform("com.google.firebase:firebase-bom:32.7.3"))
     implementation("com.google.firebase:firebase-analytics")
+    implementation("androidx.viewpager2:viewpager2:1.0.0")
+
+    implementation("me.relex:circleindicator:2.1.6")
+    implementation("androidx.recyclerview:recyclerview:1.2.1")
+
 
 }
