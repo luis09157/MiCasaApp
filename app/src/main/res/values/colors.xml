@@ -11,4 +11,5 @@
     <color name="errorColor">#F44336</color>
 
     <color name="naranja_oscuro">#C46B00</color>
+    <color name="naranja_claro">#EA8000</color>
 </resources>
