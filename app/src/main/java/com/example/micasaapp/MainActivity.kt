@@ -2,9 +2,8 @@ package com.example.micasaapp
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.micasaapp.Fragments.CategoriasFragment
-import com.example.micasaapp.Fragments.HomeFragment
 import com.example.micasaapp.Util.UtilHelper
+import com.example.micasaapp.ui.home.HomeFragment
 import com.ninodev.micasaapp.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -15,6 +14,6 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        UtilHelper.replaceFragment(this,HomeFragment())
+        UtilHelper.replaceFragment(this, HomeFragment())
     }
 }

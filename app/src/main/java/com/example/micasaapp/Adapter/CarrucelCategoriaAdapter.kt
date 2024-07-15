@@ -6,10 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.micasaapp.Data.CategoriasModel
 import com.example.micasaapp.Util.UtilHelper
 import com.ninodev.micasaapp.R
@@ -23,7 +21,7 @@ class CarrucelCategoriaAdapter(private val mContext: Context, private var catego
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view: View = LayoutInflater.from(parent.context).inflate(R.layout.layout_listitem, parent, false)
+        val view: View = LayoutInflater.from(parent.context).inflate(R.layout.recyclerview_categoria_home, parent, false)
         return ViewHolder(view)
     }
 
