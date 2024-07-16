@@ -2,24 +2,30 @@ package com.example.micasaapp.ui.home
 
 import android.os.AsyncTask
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.util.Util
 import com.example.micasaapp.Adapter.CarouselAdapter
 import com.example.micasaapp.Adapter.CarrucelCategoriaAdapter
 import com.example.micasaapp.Adapter.TrabajosHomeAdapter
 import com.example.micasaapp.Api.ApiClient
 import com.example.micasaapp.Api.Config
+import com.example.micasaapp.Api.DataConfig
 import com.example.micasaapp.Data.CategoriasModel
+import com.example.micasaapp.Fragments.CategoriasDetalleFragment
 import com.example.micasaapp.Fragments.CategoriasFragment
 import com.example.micasaapp.Model.TrabajosHomeModel
 import com.example.micasaapp.Util.MessageUtil
 import com.example.micasaapp.Util.NetworkErrorUtil
 import com.example.micasaapp.Util.UtilHelper
+import com.ninodev.micasaapp.R
 import com.ninodev.micasaapp.databinding.FragmentHomeBinding
 import me.relex.circleindicator.CircleIndicator3
 
@@ -27,24 +33,29 @@ class HomeFragment : Fragment() {
     private val TAG: String = "HomeFragment"
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
-
+    private val DOUBLE_BACK_PRESS_INTERVAL = 5000 // Intervalo en milisegundos para presionar dos veces BACK
+    private var doubleBackToExitPressedOnce = false
+    private val handler = Handler()
     private var listCategoriasMoshi: MutableList<CategoriasModel> = mutableListOf()
     private var trabajosList: List<TrabajosHomeModel> = listOf()
-
-    private val mNames: ArrayList<String> = ArrayList()
-    private val mImageUrls: ArrayList<String> = ArrayList()
-
+    companion object {
+        private const val AUTO_SCROLL_INTERVAL = 3000L
+        private const val AUTO_SCROLL_START_DELAY = 10000L
+    }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        showLoadingAnimation()
+
         initCarousel()
-        FetchCategoriasTask().execute()
+        initListeners()
         FetchTrabajosTask().execute() // Nueva tarea para cargar los trabajos
+        FetchCategoriasTask().execute()
+
 
         return root
     }
-
     private fun initCarousel() {
         val carouselAdapter = CarouselAdapter()
         binding.viewPager.adapter = carouselAdapter
@@ -53,10 +64,11 @@ class HomeFragment : Fragment() {
         indicator.setViewPager(binding.viewPager)
 
         binding.viewPager.postDelayed({
-            startAutoScroll()
+            if (isAdded && _binding != null) {
+                startAutoScroll()
+            }
         }, AUTO_SCROLL_START_DELAY)
     }
-
     private fun startAutoScroll() {
         val carouselAdapter = binding.viewPager.adapter as CarouselAdapter
         val totalPages = carouselAdapter.itemCount
@@ -66,17 +78,11 @@ class HomeFragment : Fragment() {
         binding.viewPager.setCurrentItem(nextPage, true)
 
         binding.viewPager.postDelayed({
-            if (isAdded) {
+            if (isAdded && _binding != null) {
                 startAutoScroll()
             }
         }, AUTO_SCROLL_INTERVAL)
     }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
     override fun onResume() {
         super.onResume()
         if (view == null) {
@@ -86,17 +92,29 @@ class HomeFragment : Fragment() {
         requireView().requestFocus()
         requireView().setOnKeyListener { _, keyCode, event ->
             if (event.action == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
-                UtilHelper.replaceFragment(requireContext(), CategoriasFragment())
+                if (doubleBackToExitPressedOnce) {
+                    // Si ya se ha presionado dos veces BACK, salir de la aplicación
+                    activity?.finish()
+                } else {
+                    // Mostrar mensaje o realizar alguna acción al primer press
+                    doubleBackToExitPressedOnce = true
+                    MessageUtil.showInfoMessage(requireContext(), requireView(),"Presiona nuevamente para salir")
+
+                    // Restablecer la bandera después del intervalo definido
+                    handler.postDelayed({
+                        doubleBackToExitPressedOnce = false
+                    }, DOUBLE_BACK_PRESS_INTERVAL.toLong())
+                }
                 true
             } else false
         }
     }
 
-    companion object {
-        private const val AUTO_SCROLL_INTERVAL = 3000L
-        private const val AUTO_SCROLL_START_DELAY = 10000L
+    private fun initListeners(){
+        binding.btnCategorias.setOnClickListener {
+            UtilHelper.replaceFragment(requireContext(), CategoriasFragment())
+        }
     }
-
     private inner class FetchCategoriasTask : AsyncTask<Void, Void, List<CategoriasModel>>() {
         override fun doInBackground(vararg params: Void?): List<CategoriasModel>? {
             return try {
@@ -121,14 +139,21 @@ class HomeFragment : Fragment() {
                 Log.e("FetchCategoriasTask", "Error fetching categorias: $errorMessage", exception)
                 MessageUtil.showErrorMessage(requireContext(), requireView(), "Error al cargar las categorías")
             }
+
+            hideLoadingAnimation()
         }
     }
-
     private fun initRecyclerView() {
         val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        binding.recyclerView.layoutManager = layoutManager
-        val adapter = CarrucelCategoriaAdapter(requireContext(), listCategoriasMoshi)
-        binding.recyclerView.adapter = adapter
+        binding.recyclerViewCategorias.layoutManager = layoutManager
+        val adapter = CarrucelCategoriaAdapter(requireContext(), listCategoriasMoshi) { categoria ->
+            onCategoriaClicked(categoria)
+        }
+        binding.recyclerViewCategorias.adapter = adapter
+    }
+    private fun onCategoriaClicked(categoria: CategoriasModel) {
+        DataConfig.IDCATEGORIA = categoria.idCategoria
+        UtilHelper.replaceFragment(requireContext(), CategoriasDetalleFragment())
     }
 
     private inner class FetchTrabajosTask : AsyncTask<Void, Void, List<TrabajosHomeModel>>() {
@@ -162,9 +187,33 @@ class HomeFragment : Fragment() {
             }
         }
     }
-
     private fun initGridView() {
         val adapter = TrabajosHomeAdapter(requireContext(), trabajosList)
         binding.gridListaTrabajos.adapter = adapter
     }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        handler.removeCallbacksAndMessages(null)
+    }
+    private fun showLoadingAnimation() {
+        binding.lottieAnimationView.visibility = View.VISIBLE
+        binding.contHome.visibility = View.GONE
+        binding.lottieAnimationView.setAnimation(R.raw.avionsito_loading) // Reemplaza con tu archivo JSON
+        binding.lottieAnimationView.playAnimation()
+        binding.fragmentNoData.contNoData.visibility = View.GONE
+    }
+
+    private fun hideLoadingAnimation() {
+        binding.lottieAnimationView.visibility = View.GONE
+        binding.contHome.visibility = View.VISIBLE
+        binding.lottieAnimationView.cancelAnimation()
+        binding.fragmentNoData.contNoData.visibility = View.GONE
+    }
+    private fun showNodata(){
+        binding.lottieAnimationView.visibility = View.GONE
+        binding.contHome.visibility = View.GONE
+        binding.lottieAnimationView.cancelAnimation()
+        binding.fragmentNoData.contNoData.visibility = View.VISIBLE
+    }
+
 }

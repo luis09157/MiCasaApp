@@ -13,8 +13,9 @@
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            app:cardCornerRadius="25dp">
+            android:layout_height="300dp"
+            app:cardCornerRadius="25dp"
+            android:backgroundTint="@color/white">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -27,8 +28,8 @@
                     android:layout_weight="1">
 
                     <androidx.cardview.widget.CardView
-                        android:layout_width="125dp"
-                        android:layout_height="125dp"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
                         app:cardCornerRadius="100dp">
                         <ImageView
                             android:layout_width="match_parent"
@@ -36,20 +37,35 @@
                             android:src="@drawable/img_perfil"
                             android:scaleType="centerCrop"/>
                     </androidx.cardview.widget.CardView>
+
                     <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="30dp"
                         android:gravity="center"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/zen_bold"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="5dp"
+                        android:maxLines="2"
                         android:text="Perla Montoya"
-                        android:textSize="20dp"
-                        android:textStyle="bold"/>
+                        android:layout_marginTop="10dp"
+                        app:autoSizeMaxTextSize="25dp"
+                        app:autoSizeMinTextSize="19dp"
+                        app:autoSizeTextType="uniform" />
+
+
+
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/zen_regular"
+                        android:maxLines="2"
                         android:text="Electricista"
                         android:gravity="center"
-                        android:textSize="13dp"
-                        android:textStyle="normal"/>
+                        app:autoSizeMaxTextSize="20dp"
+                        app:autoSizeMinTextSize="12dp"
+                        app:autoSizeTextType="uniform" />
 
                 </LinearLayout>
                 <LinearLayout
@@ -64,12 +80,21 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/ic_telefono" />
+
+
                     <TextView
+                        android:id="@+id/txtNombreTrabajador"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/zen_regular"
+                        android:maxLines="1"
                         android:text="+52 8112034054"
-                        android:textSize="9dp"
-                        android:textStyle="normal"/>
+                        app:autoSizeMaxTextSize="20dp"
+                        app:autoSizeMinTextSize="12dp"
+                        app:autoSizeTextType="uniform" />
+
+
                     <View
                         android:layout_height="0.5dp"
                         android:layout_width="match_parent"
@@ -83,19 +108,24 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/ic_email" />
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/zen_regular"
+                        android:maxLines="2"
                         android:text="luis.nino@sorteostec.mx"
-                        android:textSize="9dp"
-                        android:textStyle="normal"/>
+                        app:autoSizeMaxTextSize="20dp"
+                        app:autoSizeMinTextSize="12dp"
+                        app:autoSizeTextType="uniform" />
 
                     <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
-                        android:layout_height="20dp"
+                        android:layout_height="30dp"
                         android:layout_marginRight="20dp"
                         android:layout_marginLeft="20dp"
-                        android:layout_marginTop="15dp"
+                        android:layout_marginTop="60dp"
                         app:cardBackgroundColor="#F6F6F6"
                         app:cardCornerRadius="5dp">
                         <LinearLayout

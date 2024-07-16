@@ -76,7 +76,7 @@ class CategoriasDetalleFragment : Fragment() {
         requireView().requestFocus()
         requireView().setOnKeyListener { v, keyCode, event ->
             if (event.action == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
-                requireActivity().onBackPressed()
+                UtilHelper.replaceFragment(requireContext(), CategoriasFragment())
                 true
             } else false
         }
@@ -109,6 +109,9 @@ class CategoriasDetalleFragment : Fragment() {
                     // Configurar el adaptador con la lista original
                     subCategoriaAdapter = SubCategoriaAdapter(requireContext(), originalSubCategoriasList)
                     binding.listSubCategoriaDetalle.adapter = subCategoriaAdapter
+                    binding.listSubCategoriaDetalle.setOnItemClickListener { adapterView, view, i, l ->
+                        UtilHelper.replaceFragment(requireContext(), TrabajadoresFragment())
+                    }
 
                     // Configurar el SearchView
                     binding.searchSubCategoria.setOnQueryTextListener(object : SearchView.OnQueryTextListener {

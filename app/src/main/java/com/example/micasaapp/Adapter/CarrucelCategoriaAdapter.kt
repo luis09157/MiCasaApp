@@ -13,8 +13,11 @@ import com.example.micasaapp.Util.UtilHelper
 import com.ninodev.micasaapp.R
 import de.hdodenhof.circleimageview.CircleImageView
 
-class CarrucelCategoriaAdapter(private val mContext: Context, private var categorias: List<CategoriasModel>) :
-    RecyclerView.Adapter<CarrucelCategoriaAdapter.ViewHolder>() {
+class CarrucelCategoriaAdapter(
+    private val mContext: Context,
+    private var categorias: List<CategoriasModel>,
+    private val listener: (CategoriasModel) -> Unit // Añadir el listener aquí
+) : RecyclerView.Adapter<CarrucelCategoriaAdapter.ViewHolder>() {
 
     companion object {
         private const val TAG = "RecyclerViewAdapter"
@@ -31,12 +34,13 @@ class CarrucelCategoriaAdapter(private val mContext: Context, private var catego
         holder.image.setImageDrawable(
             ContextCompat.getDrawable(mContext, UtilHelper.obtenerImagenPorCategoria(
                 categorias[position].idCategoria
-            )!!))
+            )!!)
+        )
 
         holder.name.text = categorias[position].nombreCategoria
 
-        holder.image.setOnClickListener {
-
+        holder.itemView.setOnClickListener {
+            listener(categorias[position]) // Llamar al listener cuando se haga clic en el elemento
         }
     }
 

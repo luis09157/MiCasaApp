@@ -8,7 +8,7 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_height="220dp"
         app:cardCornerRadius="25dp"
         android:layout_margin="5dp"
         tools:ignore="MissingConstraints">
@@ -19,7 +19,7 @@
             android:orientation="vertical">
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="150dp">
+                android:layout_height="130dp">
                 <ImageView
                     android:id="@+id/imagen"
                     android:layout_width="match_parent"
@@ -42,7 +42,6 @@
                     android:layout_marginLeft="15dp"
                     android:layout_marginTop="5dp"
                     android:layout_marginRight="5dp"
-                    android:layout_marginBottom="5dp"
                     android:textColor="@color/black"
                     android:fontFamily="@font/zen_black"
                     android:layout_weight="1"
@@ -61,7 +60,6 @@
                     android:layout_marginLeft="15dp"
                     android:layout_marginTop="5dp"
                     android:layout_marginRight="5dp"
-                    android:layout_marginBottom="5dp"
                     android:layout_weight="1"
                     android:fontFamily="@font/zen_bold"
                     android:gravity="left|center"
@@ -88,7 +86,6 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:layout_margin="5dp"
-
                         android:gravity="left|center"
                         android:fontFamily="@font/zen_bold"
                         android:maxLines="1"
@@ -103,10 +100,10 @@
 
         </LinearLayout>
         <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_gravity="right|bottom"
-            android:layout_marginBottom="80dp"
+            android:layout_marginBottom="75dp"
             android:layout_marginRight="5dp"
             android:src="@drawable/ic_corazon"/>
     </androidx.cardview.widget.CardView>

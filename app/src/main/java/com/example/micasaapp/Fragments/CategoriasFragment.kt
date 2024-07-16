@@ -18,6 +18,7 @@ import com.ninodev.micasaapp.R
 import com.example.micasaapp.Util.MessageUtil
 import com.example.micasaapp.Util.NetworkErrorUtil
 import com.example.micasaapp.Util.UtilHelper
+import com.example.micasaapp.ui.home.HomeFragment
 import com.ninodev.micasaapp.databinding.FragmentCategoriasBinding
 
 class CategoriasFragment : Fragment() {
@@ -75,6 +76,7 @@ class CategoriasFragment : Fragment() {
         requireView().requestFocus()
         requireView().setOnKeyListener { v, keyCode, event ->
             if (event.action == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
+                UtilHelper.replaceFragment(requireContext(), HomeFragment())
                 true
             } else false
         }

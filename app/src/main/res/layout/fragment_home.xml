@@ -6,7 +6,21 @@
     android:layout_height="match_parent"
     android:background="@color/background_color">
 
+    <include
+        android:id="@+id/fragment_no_data"
+        layout="@layout/fragment_no_data"/>
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lottieAnimationView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:lottie_autoPlay="true"
+        android:background="@color/white"
+        app:lottie_loop="true"
+        android:visibility="gone" />
+
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/cont_home"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="10dp"
@@ -86,6 +100,7 @@
                         app:cardCornerRadius="20dp">
 
                         <TextView
+                            android:id="@+id/btn_categorias"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_margin="5dp"
@@ -123,7 +138,7 @@
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView"
+                android:id="@+id/recyclerView_categorias"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
