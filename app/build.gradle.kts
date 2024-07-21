@@ -16,8 +16,8 @@ android {
         applicationId = "com.ninodev.micasaapp"
         minSdk = 24
         targetSdk = 33
-        versionCode = 4
-        versionName = "2.2"
+        versionCode = 6
+        versionName = "2.4"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -67,6 +67,8 @@ dependencies {
     implementation ("com.github.bumptech.glide:glide:4.12.0")
     annotationProcessor ("com.github.bumptech.glide:compiler:4.12.0")
     implementation ("de.hdodenhof:circleimageview:3.1.0")
+    implementation ("com.squareup.picasso:picasso:2.71828")
+
 
 
 }

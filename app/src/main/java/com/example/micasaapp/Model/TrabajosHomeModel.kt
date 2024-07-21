@@ -5,9 +5,9 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class TrabajosHomeModel(
-    @Json(name = "idTrabajo") val idTrabajo: Int,
-    @Json(name = "nombreTrabajador") val nombreTrabajador: String,
-    @Json(name = "nombreProfecion") val nombreProfecion: String,
+    @Json(name = "idProveedor") val idProveedor: Int,
+    @Json(name = "nombreCompleto") val nombreCompleto: String,
+    @Json(name = "categorias") val categorias: String,
     @Json(name = "direccion") val direccion: String,
-    @Json(name = "imagen") val imagen: String
+    @Json(name = "imagenTrabajo") val imagenTrabajo: String
 )

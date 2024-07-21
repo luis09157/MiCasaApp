@@ -55,34 +55,34 @@ class TrabajadoresFragment  : Fragment() {
     }
 
     fun llenarCategorias(){
-        listCategorias.add(CategoriaModel("Carpinteria","Lorem Ipsum es simplemente el texto de relleno de las imprentas", R.drawable.carpintero))
+        listCategorias.add(CategoriaModel("Carpinteria","Lorem Ipsum es simplemente el texto de relleno de las imprentas", R.drawable.categoria_carpintero))
         listCategorias.add(
             CategoriaModel("Electricista","Lorem Ipsum es simplemente el texto de relleno de las imprentas",
-                R.drawable.electricista)
+                R.drawable.categoria_electricista)
         )
         listCategorias.add(
             CategoriaModel("Construccion","Lorem Ipsum es simplemente el texto de relleno de las imprentas",
-                R.drawable.albanil)
+                R.drawable.categoria_albanil)
         )
         listCategorias.add(
             CategoriaModel("Plomeria","Lorem Ipsum es simplemente el texto de relleno de las imprentas",
-                R.drawable.plomero)
+                R.drawable.categoria_plomero)
         )
         listCategorias.add(
             CategoriaModel("Pintura","Lorem Ipsum es simplemente el texto de relleno de las imprentas",
-                R.drawable.pintura)
+                R.drawable.categoria_pintura)
         )
         listCategorias.add(
             CategoriaModel("Soldadores","Lorem Ipsum es simplemente el texto de relleno de las imprentas",
-                R.drawable.soldador)
+                R.drawable.cateogira_soldador)
         )
         listCategorias.add(
             CategoriaModel("Gas","Lorem Ipsum es simplemente el texto de relleno de las imprentas",
-                R.drawable.gas)
+                R.drawable.categoria_gas)
         )
         listCategorias.add(
             CategoriaModel("Fumigadores","Lorem Ipsum es simplemente el texto de relleno de las imprentas",
-                R.drawable.albanil)
+                R.drawable.categoria_albanil)
         )
     }
 }

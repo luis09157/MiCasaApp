@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background_color"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <include
@@ -26,23 +27,14 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
+            android:layout_margin="10dp"
             android:orientation="horizontal">
-            <EditText
-                android:id="@+id/editTextText"
+            <SearchView
+                android:id="@+id/searchSubCategoria"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:ems="10"
-                android:layout_weight="1"
-                android:inputType="text"
-                android:hint="Buscar..." />
-            <ImageView
-                android:id="@+id/btnBuscar"
-                android:layout_margin="10dp"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:src="@drawable/search"/>
+                android:queryHint="Buscar..."/>
+
 
         </LinearLayout>
 

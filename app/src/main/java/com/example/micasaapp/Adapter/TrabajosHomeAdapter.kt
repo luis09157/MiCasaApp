@@ -7,10 +7,9 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import com.example.micasaapp.Model.TrabajosHomeModel
-import com.example.micasaapp.Util.UtilHelper
 import com.ninodev.micasaapp.R
+import com.squareup.picasso.Picasso
 
 class TrabajosHomeAdapter(private val context: Context, private var trabajosHome: List<TrabajosHomeModel>) : BaseAdapter() {
     private var filteredTrabajosHome: List<TrabajosHomeModel> = trabajosHome
@@ -19,7 +18,7 @@ class TrabajosHomeAdapter(private val context: Context, private var trabajosHome
         filteredTrabajosHome = if (query.isBlank()) {
             trabajosHome
         } else {
-            trabajosHome.filter { it.nombreTrabajador.contains(query, ignoreCase = true) }
+            trabajosHome.filter { it.nombreCompleto.contains(query, ignoreCase = true) }
         }
         notifyDataSetChanged()
     }
@@ -42,14 +41,16 @@ class TrabajosHomeAdapter(private val context: Context, private var trabajosHome
         }
 
         with(filteredTrabajosHome[position]) {
-            viewHolder.txtNombreTrabajador.text = nombreTrabajador
-            viewHolder.txtProfecion.text = nombreProfecion
-            viewHolder.txtDireccion.text =  direccion
+            viewHolder.txtNombreTrabajador.text = nombreCompleto
+            viewHolder.txtProfecion.text = categorias
+            viewHolder.txtDireccion.text = direccion
 
-            viewHolder.imagen.setImageDrawable(
-                ContextCompat.getDrawable(context, UtilHelper.obtenerImagenPorCategoria(
-                    idTrabajo
-                )!!))
+            // Usar Picasso para cargar la imagen
+            Picasso.get()
+                .load(imagenTrabajo) // Suponiendo que 'imagenTrabajo' es la URL de la imagen
+                .placeholder(R.drawable.placeholder_image) // Imagen de marcador de posición mientras se carga la imagen
+                .error(R.drawable.error_image) // Imagen de error si la carga falla
+                .into(viewHolder.imagen)
         }
 
         return rowView!!

@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
-import androidx.recyclerview.widget.RecyclerView
 import com.example.micasaapp.Adapter.ImageAdapter
 import com.ninodev.micasaapp.R
 import com.example.micasaapp.Util.UtilHelper
@@ -21,8 +20,8 @@ class TrabajadorDetalleFragment : Fragment() {
 
     val images = listOf(
         R.drawable.img_perfil,
-        R.drawable.limpieza_hogar,
-        R.drawable.climas,
+        R.drawable.categoria_limpieza_hogar,
+        R.drawable.categoria_climas,
         // Agrega más imágenes según sea necesario
     )
     private lateinit var adapter: ImageAdapter
