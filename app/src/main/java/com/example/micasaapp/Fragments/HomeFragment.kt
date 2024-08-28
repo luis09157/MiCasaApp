@@ -58,9 +58,9 @@ class HomeFragment : Fragment() {
         showLoadingAnimation()
         initCarousel()
         initListeners()
+        fetchBanners() // Agregar esta línea para cargar los banners
         fetchCategorias()
         fetchTrabajosHome()
-        fetchBanners() // Agregar esta línea para cargar los banners
 
         return root
     }
@@ -85,9 +85,10 @@ class HomeFragment : Fragment() {
                     showNoData()
                 }
             } catch (e: Exception) {
+                hideLoadingAnimation()
                 handleNetworkError(e, "Error al cargar los banners")
             } finally {
-                hideLoadingAnimation()
+
             }
         }
     }
@@ -161,9 +162,10 @@ class HomeFragment : Fragment() {
                     showNoData()
                 }
             } catch (e: Exception) {
+                hideLoadingAnimation()
                 handleNetworkError(e, "Error al cargar las categorías")
             } finally {
-                hideLoadingAnimation()
+               // hideLoadingAnimation()
             }
         }
     }
@@ -216,11 +218,12 @@ class HomeFragment : Fragment() {
     }
 
     private fun onCategoriaClicked(categoria: CategoriasModel) {
-        DataConfig.IDCATEGORIA = categoria.idCategoria
+        DataConfig.ID_CATEGORIA = categoria.idCategoria
         UtilHelper.replaceFragment(requireContext(), CategoriasDetalleFragment())
     }
 
     private fun initGridView() {
+        hideLoadingAnimation()
         val adapter = TrabajosHomeAdapter(requireContext(), trabajosList)
         binding.gridListaTrabajos.adapter = adapter
     }

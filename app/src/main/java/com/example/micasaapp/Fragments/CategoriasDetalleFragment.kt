@@ -1,23 +1,27 @@
 package com.example.micasaapp.Fragments
 
-import android.os.AsyncTask
 import android.os.Bundle
 import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import android.widget.SearchView
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.example.micasaapp.Adapter.SubCategoriaAdapter
 import com.example.micasaapp.Api.ApiClient
 import com.example.micasaapp.Api.Config
+import com.example.micasaapp.Api.DataConfig
 import com.example.micasaapp.Model.SubCategoriasModel
 import com.example.micasaapp.Util.MessageUtil
 import com.example.micasaapp.Util.NetworkErrorUtil
 import com.example.micasaapp.Util.UtilHelper
 import com.ninodev.micasaapp.R
 import com.ninodev.micasaapp.databinding.FragmentCategoriasDetalleBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class CategoriasDetalleFragment : Fragment() {
 
@@ -34,31 +38,36 @@ class CategoriasDetalleFragment : Fragment() {
         val root: View = binding.root
 
         showLoadingAnimation()
-
-        FetchSubCategoriasTask().execute()
+        fetchSubCategorias()
 
         return root
     }
 
     private fun showLoadingAnimation() {
-        binding.lottieAnimationView.visibility = View.VISIBLE
+        binding.lottieAnimationView.apply {
+            visibility = View.VISIBLE
+            setAnimation(R.raw.avionsito_loading) // Reemplaza con tu archivo JSON
+            playAnimation()
+        }
         binding.contSubCategorias.visibility = View.GONE
-        binding.lottieAnimationView.setAnimation(R.raw.avionsito_loading) // Reemplaza con tu archivo JSON
-        binding.lottieAnimationView.playAnimation()
         binding.fragmentNoData.contNoData.visibility = View.GONE
     }
 
     private fun hideLoadingAnimation() {
-        binding.lottieAnimationView.visibility = View.GONE
+        binding.lottieAnimationView.apply {
+            visibility = View.GONE
+            cancelAnimation()
+        }
         binding.contSubCategorias.visibility = View.VISIBLE
-        binding.lottieAnimationView.cancelAnimation()
         binding.fragmentNoData.contNoData.visibility = View.GONE
     }
 
-    private fun showNodata() {
-        binding.lottieAnimationView.visibility = View.GONE
+    private fun showNoData() {
+        binding.lottieAnimationView.apply {
+            visibility = View.GONE
+            cancelAnimation()
+        }
         binding.contSubCategorias.visibility = View.GONE
-        binding.lottieAnimationView.cancelAnimation()
         binding.fragmentNoData.contNoData.visibility = View.VISIBLE
     }
 
@@ -69,73 +78,71 @@ class CategoriasDetalleFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        if (view == null) {
-            return
-        }
-        requireView().isFocusableInTouchMode = true
-        requireView().requestFocus()
-        requireView().setOnKeyListener { v, keyCode, event ->
-            if (event.action == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
-                UtilHelper.replaceFragment(requireContext(), CategoriasFragment())
-                true
-            } else false
+        view?.let {
+            it.isFocusableInTouchMode = true
+            it.requestFocus()
+            it.setOnKeyListener { _, keyCode, event ->
+                if (event.action == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
+                    UtilHelper.replaceFragment(requireContext(), CategoriasFragment())
+                    true
+                } else {
+                    false
+                }
+            }
         }
     }
 
-    private inner class FetchSubCategoriasTask : AsyncTask<Void, Void, List<SubCategoriasModel>>() {
-
-        private lateinit var originalSubCategoriasList: List<SubCategoriasModel>
-
-        override fun doInBackground(vararg params: Void?): List<SubCategoriasModel>? {
+    private fun fetchSubCategorias() {
+        lifecycleScope.launch {
             try {
                 val apiClient = ApiClient(Config._URLApi)
-                originalSubCategoriasList = apiClient.getSubCategorias() ?: emptyList()
-                return originalSubCategoriasList
+                val result = withContext(Dispatchers.IO) { apiClient.getSubCategorias() }
+                handleSubCategoriasResult(result)
             } catch (e: Exception) {
-                Log.e("Error", "Error: ${e.message}")
-                showNodata()
-                return null
+                handleSubCategoriasError(e)
             }
         }
+    }
 
-        override fun onPostExecute(result: List<SubCategoriasModel>?) {
-            super.onPostExecute(result)
+    private fun handleSubCategoriasResult(result: List<SubCategoriasModel>) {
+        hideLoadingAnimation()
 
-            hideLoadingAnimation()
-
-            if (result != null) {
-                listSubCategoriasMoshi.addAll(result)
-                if (listSubCategoriasMoshi.isNotEmpty()) {
-                    // Configurar el adaptador con la lista original
-                    subCategoriaAdapter = SubCategoriaAdapter(requireContext(), originalSubCategoriasList)
-                    binding.listSubCategoriaDetalle.adapter = subCategoriaAdapter
-                    binding.listSubCategoriaDetalle.setOnItemClickListener { adapterView, view, i, l ->
-                        UtilHelper.replaceFragment(requireContext(), TrabajadoresFragment())
-                    }
-
-                    // Configurar el SearchView
-                    binding.searchSubCategoria.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-                        override fun onQueryTextSubmit(query: String?): Boolean {
-                            return false
-                        }
-
-                        override fun onQueryTextChange(newText: String?): Boolean {
-                            subCategoriaAdapter.filter(newText.orEmpty())
-                            return true
-                        }
-                    })
-                } else {
-                    showNodata()
-                }
-            } else {
-                // Handle error
-                val exception = Exception("Error obteniendo subcategorías")
-                val errorMessage = NetworkErrorUtil.handleNetworkError(exception)
-                Log.e("FetchSubCategoriasTask", "Error fetching subcategorias: $errorMessage", exception)
-                MessageUtil.showErrorMessage(requireContext(), requireView(), "Error al cargar las subcategorías")
-
-                showNodata()
-            }
+        if (result.isNotEmpty()) {
+            listSubCategoriasMoshi.addAll(result)
+            setupSubCategoriaAdapter(result)
+            setupSearchView()
+        } else {
+            showNoData()
         }
+    }
+
+    private fun handleSubCategoriasError(exception: Exception) {
+        hideLoadingAnimation()
+        val errorMessage = NetworkErrorUtil.handleNetworkError(exception)
+        Log.e("CategoriasDetalleFragment", "Error fetching subcategorias: $errorMessage", exception)
+        MessageUtil.showErrorMessage(requireContext(), requireView(), "Error al cargar las subcategorías")
+        showNoData()
+    }
+
+    private fun setupSubCategoriaAdapter(subCategorias: List<SubCategoriasModel>) {
+        subCategoriaAdapter = SubCategoriaAdapter(requireContext(), subCategorias)
+        binding.listSubCategoriaDetalle.adapter = subCategoriaAdapter
+        binding.listSubCategoriaDetalle.setOnItemClickListener { _, _, i, _ ->
+            DataConfig.ID_SUBCATEGORIA = subCategorias[i].idSubCategoria
+            UtilHelper.replaceFragment(requireContext(), TrabajadoresFragment())
+        }
+    }
+
+    private fun setupSearchView() {
+        binding.searchSubCategoria.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                subCategoriaAdapter.filter(newText.orEmpty())
+                return true
+            }
+        })
     }
 }

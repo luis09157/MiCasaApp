@@ -7,9 +7,9 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
+import com.bumptech.glide.Glide
 import com.example.micasaapp.Model.TrabajosHomeModel
 import com.ninodev.micasaapp.R
-import com.squareup.picasso.Picasso
 
 class TrabajosHomeAdapter(private val context: Context, private var trabajosHome: List<TrabajosHomeModel>) : BaseAdapter() {
     private var filteredTrabajosHome: List<TrabajosHomeModel> = trabajosHome
@@ -45,8 +45,8 @@ class TrabajosHomeAdapter(private val context: Context, private var trabajosHome
             viewHolder.txtProfecion.text = categorias
             viewHolder.txtDireccion.text = direccion
 
-            // Usar Picasso para cargar la imagen
-            Picasso.get()
+            // Usar Glide para cargar la imagen
+            Glide.with(context)
                 .load(imagenTrabajo) // Suponiendo que 'imagenTrabajo' es la URL de la imagen
                 .placeholder(R.drawable.placeholder_image) // Imagen de marcador de posición mientras se carga la imagen
                 .error(R.drawable.error_image) // Imagen de error si la carga falla

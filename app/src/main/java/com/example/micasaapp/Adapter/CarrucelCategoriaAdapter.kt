@@ -1,7 +1,6 @@
 package com.example.micasaapp.Adapter
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,40 +15,32 @@ import de.hdodenhof.circleimageview.CircleImageView
 class CarrucelCategoriaAdapter(
     private val mContext: Context,
     private var categorias: List<CategoriasModel>,
-    private val listener: (CategoriasModel) -> Unit // Añadir el listener aquí
+    private val listener: (CategoriasModel) -> Unit
 ) : RecyclerView.Adapter<CarrucelCategoriaAdapter.ViewHolder>() {
 
-    companion object {
-        private const val TAG = "RecyclerViewAdapter"
-    }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view: View = LayoutInflater.from(parent.context).inflate(R.layout.recyclerview_categoria_home, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.recyclerview_categoria_home, parent, false)
         return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        Log.d(TAG, "onBindViewHolder: called.")
-
-        holder.image.setImageDrawable(
-            ContextCompat.getDrawable(mContext, UtilHelper.obtenerImagenPorCategoria(
-                categorias[position].idCategoria
-            )!!)
-        )
-
-        holder.name.text = categorias[position].nombreCategoria
-
-        holder.itemView.setOnClickListener {
-            listener(categorias[position]) // Llamar al listener cuando se haga clic en el elemento
-        }
+        val categoria = categorias[position]
+        holder.bind(categoria)
     }
 
-    override fun getItemCount(): Int {
-        return categorias.size
-    }
+    override fun getItemCount(): Int = categorias.size
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var image: CircleImageView = itemView.findViewById(R.id.image_view)
-        var name: TextView = itemView.findViewById(R.id.name)
+        private val image: CircleImageView = itemView.findViewById(R.id.image_view)
+        private val name: TextView = itemView.findViewById(R.id.name)
+
+        fun bind(categoria: CategoriasModel) {
+            val imageResource = UtilHelper.obtenerImagenPorCategoria(categoria.idCategoria)
+            imageResource?.let {
+                image.setImageDrawable(ContextCompat.getDrawable(mContext, it))
+            }
+            name.text = categoria.nombreCategoria
+            itemView.setOnClickListener { listener(categoria) }
+        }
     }
 }

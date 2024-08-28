@@ -2,82 +2,157 @@ package com.example.micasaapp.Fragments
 
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import com.example.micasaapp.Adapter.ImageAdapter
-import com.ninodev.micasaapp.R
+import com.example.micasaapp.Api.ApiClient
+import com.example.micasaapp.Api.Config
+import com.example.micasaapp.Model.FotoTrabajoModel
+import com.example.micasaapp.Model.ProveedorResponse
+import com.example.micasaapp.Model.TrabajadorModel
+import com.example.micasaapp.Util.MessageUtil
+import com.example.micasaapp.Util.NetworkErrorUtil
 import com.example.micasaapp.Util.UtilHelper
+import com.example.micasaapp.ui.home.HomeFragment
+import com.ninodev.micasaapp.R
 import com.ninodev.micasaapp.databinding.FragmentTrabajadorDetalleDetalleBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class TrabajadorDetalleFragment : Fragment() {
+
     private var _binding: FragmentTrabajadorDetalleDetalleBinding? = null
     private val binding get() = _binding!!
 
-    val images = listOf(
-        R.drawable.img_perfil,
-        R.drawable.categoria_limpieza_hogar,
-        R.drawable.categoria_climas,
-        // Agrega más imágenes según sea necesario
-    )
     private lateinit var adapter: ImageAdapter
     private var currentIndex = 0
     private val handler = Handler()
     private lateinit var runnable: Runnable
+    companion object{
+        var _TRABAJADOR_GLOBAL : TrabajadorModel = TrabajadorModel()
+    }
+
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
+        inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentTrabajadorDetalleDetalleBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        initCarrucel()
+        showLoadingAnimation()
+        fetchProveedorData()
 
         return root
     }
 
-    fun initCarrucel(){
-        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+    private fun showLoadingAnimation() {
+        binding.lottieAnimationView.apply {
+            visibility = View.VISIBLE
+            setAnimation(R.raw.avionsito_loading)
+            playAnimation()
+        }
+        binding.contProveedor.visibility = View.GONE
+        binding.fragmentNoData.contNoData.visibility = View.GONE
+    }
 
+    private fun hideLoadingAnimation() {
+        binding.lottieAnimationView.apply {
+            visibility = View.GONE
+            cancelAnimation()
+        }
+        binding.contProveedor.visibility = View.VISIBLE
+        binding.fragmentNoData.contNoData.visibility = View.GONE
+    }
+
+    private fun showNoData() {
+        binding.lottieAnimationView.apply {
+            visibility = View.GONE
+            cancelAnimation()
+        }
+        binding.contProveedor.visibility = View.GONE
+        binding.fragmentNoData.contNoData.visibility = View.VISIBLE
+    }
+
+    private fun fetchProveedorData() {
+        lifecycleScope.launch {
+            try {
+                val apiClient = ApiClient(Config._URLApi)
+                val result = withContext(Dispatchers.IO) { apiClient.getProveedor(_TRABAJADOR_GLOBAL.idProveedor) }
+                handleProveedorResult(result)
+            } catch (e: Exception) {
+                handleProveedorError(e)
+            }
+        }
+    }
+
+    private fun handleProveedorResult(result: ProveedorResponse) {
+        hideLoadingAnimation()
+
+        binding.txtTelefono.text = result.datosProveedor.telefono
+        binding.txtNombre.text = "${result.datosProveedor.nombre} ${result.datosProveedor.apellidoPaterno} ${result.datosProveedor.apellidoMaterno}"
+        binding.txtCorreo.text = result.datosProveedor.email
+        binding.txtOficio.text = result.datosProveedor.descripcion
+
+        if (result.listaFotosTrabajo.isNotEmpty()) {
+            setupRecyclerView(result.listaFotosTrabajo)
+        } else {
+            showNoData()
+        }
+    }
+
+    private fun setupRecyclerView(images: List<FotoTrabajoModel>) {
+        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         adapter = ImageAdapter(images)
         binding.recyclerView.adapter = adapter
 
-        // Agrega el efecto de pager al RecyclerView
         val snapHelper = PagerSnapHelper()
         snapHelper.attachToRecyclerView(binding.recyclerView)
 
-        // Programa la actualización automática cada 5 segundos
         runnable = object : Runnable {
             override fun run() {
                 currentIndex = (currentIndex + 1) % images.size
                 binding.recyclerView.smoothScrollToPosition(currentIndex)
-                handler.postDelayed(this, 5000) // 5000 milisegundos = 5 segundos
+                handler.postDelayed(this, 5000)
             }
         }
         handler.postDelayed(runnable, 5000)
     }
-    override fun onDestroy() {
-        super.onDestroy()
-        // Detiene la actualización automática al destruir la actividad
-        handler.removeCallbacks(runnable)
+
+    private fun handleProveedorError(exception: Exception) {
+        hideLoadingAnimation()
+        val errorMessage = NetworkErrorUtil.handleNetworkError(exception)
+        Log.e("TrabajadorDetalleFragment", "Error fetching proveedor: $errorMessage", exception)
+        MessageUtil.showErrorMessage(requireContext(), requireView(), "Error al cargar los detalles del proveedor")
+        showNoData()
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        handler.removeCallbacks(runnable)
+        _binding = null
+    }
+
     override fun onResume() {
         super.onResume()
-        if (view == null) {
-            return
-        }
-        requireView().isFocusableInTouchMode = true
-        requireView().requestFocus()
-        requireView().setOnKeyListener { v, keyCode, event ->
-            if (event.action == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
-                UtilHelper.replaceFragment(requireContext(),TrabajadoresFragment())
-                true
-            } else false
+        view?.let {
+            it.isFocusableInTouchMode = true
+            it.requestFocus()
+            it.setOnKeyListener { _, keyCode, event ->
+                if (event.action == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
+                    UtilHelper.replaceFragment(requireContext(), HomeFragment())
+                    true
+                } else {
+                    false
+                }
+            }
         }
     }
 }

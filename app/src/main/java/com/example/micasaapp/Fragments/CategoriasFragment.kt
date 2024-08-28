@@ -1,6 +1,5 @@
 package com.example.micasaapp.Fragments
 
-import android.os.AsyncTask
 import android.os.Bundle
 import android.util.Log
 import android.view.KeyEvent
@@ -8,18 +7,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.example.micasaapp.Adapter.CategoriaAdapter
 import com.example.micasaapp.Api.ApiClient
 import com.example.micasaapp.Api.Config
 import com.example.micasaapp.Api.DataConfig
 import com.example.micasaapp.Data.CategoriasModel
 import com.example.micasaapp.Util.DialogUtil
-import com.ninodev.micasaapp.R
 import com.example.micasaapp.Util.MessageUtil
 import com.example.micasaapp.Util.NetworkErrorUtil
 import com.example.micasaapp.Util.UtilHelper
 import com.example.micasaapp.ui.home.HomeFragment
+import com.ninodev.micasaapp.R
 import com.ninodev.micasaapp.databinding.FragmentCategoriasBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class CategoriasFragment : Fragment() {
 
@@ -35,30 +38,36 @@ class CategoriasFragment : Fragment() {
         val root: View = binding.root
 
         showLoadingAnimation()
-
-        FetchCategoriasTask().execute()
+        fetchCategorias()
 
         return root
     }
 
     private fun showLoadingAnimation() {
-        binding.lottieAnimationView.visibility = View.VISIBLE
+        binding.lottieAnimationView.apply {
+            visibility = View.VISIBLE
+            setAnimation(R.raw.avionsito_loading) // Reemplaza con tu archivo JSON
+            playAnimation()
+        }
         binding.contCategorias.visibility = View.GONE
-        binding.lottieAnimationView.setAnimation(R.raw.avionsito_loading) // Reemplaza con tu archivo JSON
-        binding.lottieAnimationView.playAnimation()
         binding.fragmentNoData.contNoData.visibility = View.GONE
     }
 
     private fun hideLoadingAnimation() {
-        binding.lottieAnimationView.visibility = View.GONE
+        binding.lottieAnimationView.apply {
+            visibility = View.GONE
+            cancelAnimation()
+        }
         binding.contCategorias.visibility = View.VISIBLE
-        binding.lottieAnimationView.cancelAnimation()
         binding.fragmentNoData.contNoData.visibility = View.GONE
     }
-    private fun showNodata(){
-        binding.lottieAnimationView.visibility = View.GONE
+
+    private fun showNoData() {
+        binding.lottieAnimationView.apply {
+            visibility = View.GONE
+            cancelAnimation()
+        }
         binding.contCategorias.visibility = View.GONE
-        binding.lottieAnimationView.cancelAnimation()
         binding.fragmentNoData.contNoData.visibility = View.VISIBLE
     }
 
@@ -69,57 +78,53 @@ class CategoriasFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        if (view == null) {
-            return
-        }
-        requireView().isFocusableInTouchMode = true
-        requireView().requestFocus()
-        requireView().setOnKeyListener { v, keyCode, event ->
-            if (event.action == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
-                UtilHelper.replaceFragment(requireContext(), HomeFragment())
-                true
-            } else false
+        view?.let {
+            it.isFocusableInTouchMode = true
+            it.requestFocus()
+            it.setOnKeyListener { _, keyCode, event ->
+                if (event.action == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
+                    UtilHelper.replaceFragment(requireContext(), HomeFragment())
+                    true
+                } else {
+                    false
+                }
+            }
         }
     }
 
-    private inner class FetchCategoriasTask : AsyncTask<Void, Void, List<CategoriasModel>>() {
-
-        override fun doInBackground(vararg params: Void?): List<CategoriasModel>? {
-            return try {
+    private fun fetchCategorias() {
+        lifecycleScope.launch {
+            try {
                 val apiClient = ApiClient(Config._URLApi)
-                apiClient.getCategorias()
+                val result = withContext(Dispatchers.IO) { apiClient.getCategorias() }
+                handleCategoriasResult(result)
             } catch (e: Exception) {
-                null
+                handleCategoriasError(e)
             }
         }
+    }
 
-        override fun onPostExecute(result: List<CategoriasModel>?) {
-            super.onPostExecute(result)
+    private fun handleCategoriasResult(result: List<CategoriasModel>) {
+        hideLoadingAnimation()
 
-            hideLoadingAnimation()
-
-            if (result != null) {
-                listCategoriasMoshi.addAll(result)
-                if(listCategoriasMoshi.size > 0 ){
-                    val categoriaAdapter = CategoriaAdapter(requireContext(), listCategoriasMoshi)
-                    binding.listCategoria.adapter = categoriaAdapter
-                    binding.listCategoria.setOnItemClickListener { adapterView, view, i, l ->
-                        DataConfig.IDCATEGORIA = listCategoriasMoshi.get(i).idCategoria
-                        UtilHelper.replaceFragment(requireContext(), CategoriasDetalleFragment())
-                    }
-                }else{
-                    showNodata()
-                }
-            } else {
-                // Handle error
-                val exception = Exception("Error obteniendo categorías")
-                val errorMessage = NetworkErrorUtil.handleNetworkError(exception)
-                Log.e("FetchCategoriasTask", "Error fetching categorias: $errorMessage", exception)
-                MessageUtil.showErrorMessage(requireContext(), requireView(), "Error al cargar las categorías")
-                showNodata()
-
-                // Puedes mostrar el mensaje de error al usuario, por ejemplo, mediante un Toast o un AlertDialog
+        if (result.isNotEmpty()) {
+            listCategoriasMoshi.addAll(result)
+            val categoriaAdapter = CategoriaAdapter(requireContext(), listCategoriasMoshi)
+            binding.listCategoria.adapter = categoriaAdapter
+            binding.listCategoria.setOnItemClickListener { _, _, i, _ ->
+                DataConfig.ID_CATEGORIA = listCategoriasMoshi[i].idCategoria
+                UtilHelper.replaceFragment(requireContext(), CategoriasDetalleFragment())
             }
+        } else {
+            showNoData()
         }
+    }
+
+    private fun handleCategoriasError(exception: Exception) {
+        hideLoadingAnimation()
+        val errorMessage = NetworkErrorUtil.handleNetworkError(exception)
+        Log.e("CategoriasFragment", "Error fetching categorias: $errorMessage", exception)
+        MessageUtil.showErrorMessage(requireContext(), requireView(), "Error al cargar las categorías")
+        showNoData()
     }
 }

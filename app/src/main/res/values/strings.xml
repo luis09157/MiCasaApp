@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">MiCasaApp</string>
+
+
+    <string name="txt_titulo_galeria_trabajo_detalle">Galeria de trabajos</string>
+    <string name="txt_titulo_opiniones_trabajo_detalle">Opiniones</string>
 </resources>

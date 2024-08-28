@@ -5,7 +5,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/background_color">
 
+    <include
+        android:id="@+id/fragment_no_data"
+        layout="@layout/fragment_no_data"
+        android:visibility="gone"/>
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lottieAnimationView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:lottie_autoPlay="true"
+        android:background="@color/white"
+        app:lottie_loop="true"
+        android:visibility="gone" />
+
     <LinearLayout
+        android:id="@+id/cont_proveedor"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="20dp"
@@ -13,7 +28,7 @@
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="250dp"
             app:cardCornerRadius="25dp"
             android:backgroundTint="@color/white">
             <LinearLayout
@@ -39,6 +54,7 @@
                     </androidx.cardview.widget.CardView>
 
                     <TextView
+                        android:id="@+id/txt_nombre"
                         android:layout_width="match_parent"
                         android:layout_height="30dp"
                         android:gravity="center"
@@ -56,6 +72,7 @@
 
 
                     <TextView
+                        android:id="@+id/txt_oficio"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textColor="@color/black"
@@ -83,15 +100,16 @@
 
 
                     <TextView
-                        android:id="@+id/txtNombreTrabajador"
-                        android:layout_width="wrap_content"
+                        android:id="@+id/txt_telefono"
+                        android:gravity="center"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textColor="@color/black"
                         android:fontFamily="@font/zen_regular"
                         android:maxLines="1"
                         android:text="+52 8112034054"
                         app:autoSizeMaxTextSize="20dp"
-                        app:autoSizeMinTextSize="12dp"
+                        app:autoSizeMinTextSize="15dp"
                         app:autoSizeTextType="uniform" />
 
 
@@ -110,14 +128,16 @@
                         android:src="@drawable/ic_email" />
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:id="@+id/txt_correo"
+                        android:layout_width="match_parent"
+                        android:gravity="center"
                         android:layout_height="wrap_content"
                         android:textColor="@color/black"
                         android:fontFamily="@font/zen_regular"
                         android:maxLines="2"
                         android:text="luis.nino@sorteostec.mx"
                         app:autoSizeMaxTextSize="20dp"
-                        app:autoSizeMinTextSize="12dp"
+                        app:autoSizeMinTextSize="15dp"
                         app:autoSizeTextType="uniform" />
 
                     <androidx.cardview.widget.CardView
@@ -168,14 +188,41 @@
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>
-        <Space
+
+        <TextView
             android:layout_width="match_parent"
-            android:layout_height="200dp"/>
+            android:layout_height="30dp"
+            android:gravity="left"
+            android:textColor="@color/black"
+            android:fontFamily="@font/zen_bold"
+            android:textStyle="bold"
+            android:maxLines="2"
+            android:text="@string/txt_titulo_galeria_trabajo_detalle"
+            android:layout_margin="10dp"
+            app:autoSizeMaxTextSize="27dp"
+            app:autoSizeMinTextSize="20dp"
+            app:autoSizeTextType="uniform" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="200dp"
+            android:layout_margin="10dp"
             android:layout_centerInParent="true" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:gravity="left"
+            android:textColor="@color/black"
+            android:fontFamily="@font/zen_bold"
+            android:textStyle="bold"
+            android:maxLines="2"
+            android:text="@string/txt_titulo_opiniones_trabajo_detalle"
+            android:layout_margin="10dp"
+            app:autoSizeMaxTextSize="27dp"
+            app:autoSizeMinTextSize="20dp"
+            app:autoSizeTextType="uniform" />
 
     </LinearLayout>
 

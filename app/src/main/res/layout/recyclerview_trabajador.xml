@@ -11,7 +11,7 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="175dp"
+        android:layout_height="140dp"
         android:layout_margin="10dp"
         app:cardCornerRadius="20dp"
         android:background="@color/white"
@@ -37,6 +37,7 @@
                     android:layout_marginBottom="3dp"
                     android:layout_weight="0.3">
                     <ImageView
+                        android:id="@+id/imagenPerfil"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:scaleType="centerCrop"
@@ -50,7 +51,7 @@
                     app:cardBackgroundColor="#F6F6F6"
                     app:cardCornerRadius="5dp"
                     android:layout_margin="6dp"
-                    android:layout_weight="1">
+                    android:layout_weight="0.8">
                     <LinearLayout
                         android:orientation="horizontal"
                         android:layout_width="match_parent"
@@ -98,6 +99,7 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
                 <TextView
+                    android:id="@+id/nombreCompleto"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center|left"
@@ -106,6 +108,7 @@
                     android:textSize="17dp"
                     android:text="Luis Alfonso Niño Martinez"></TextView>
                 <TextView
+                    android:id="@+id/descripcion"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"

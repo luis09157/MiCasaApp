@@ -1,4 +1,5 @@
 package com.example.micasaapp.Adapter
+
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -23,37 +24,32 @@ class SubCategoriaAdapter(private val context: Context, private var subCategoria
         notifyDataSetChanged()
     }
 
-    override fun getCount(): Int {
-        return filteredSubCategorias.size
-    }
+    override fun getCount(): Int = filteredSubCategorias.size
 
-    override fun getView(position: Int, view: View?, viewGroup: ViewGroup?): View {
+    override fun getItem(position: Int): SubCategoriasModel = filteredSubCategorias[position]
+
+    override fun getItemId(position: Int): Long = position.toLong()
+
+    override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val viewHolder: ViewHolder
-        val rowView: View?
+        val view: View
 
-        if (view == null) {
-            rowView = LayoutInflater.from(context).inflate(R.layout.recyclerview_categoria, viewGroup, false)
-            viewHolder = ViewHolder(rowView)
-            rowView.tag = viewHolder
+        if (convertView == null) {
+            view = LayoutInflater.from(context).inflate(R.layout.recyclerview_categoria, parent, false)
+            viewHolder = ViewHolder(view)
+            view.tag = viewHolder
         } else {
-            rowView = view
-            viewHolder = rowView.tag as ViewHolder
+            view = convertView
+            viewHolder = view.tag as ViewHolder
         }
 
-        with(filteredSubCategorias[position]) {
-            viewHolder.txtTitulo.text = nombreSubcategoria
-            viewHolder.imgPortada.setImageDrawable(ContextCompat.getDrawable(context, obtenerImagenPorCategoria(idCategoria)!!))
+        with(viewHolder) {
+            val subCategoria = getItem(position)
+            txtTitulo.text = subCategoria.nombreSubcategoria
+            imgPortada.setImageDrawable(ContextCompat.getDrawable(context, obtenerImagenPorCategoria(subCategoria.idCategoria)!!))
         }
 
-        return rowView!!
-    }
-
-    override fun getItem(position: Int): Any {
-        return filteredSubCategorias[position]
-    }
-
-    override fun getItemId(position: Int): Long {
-        return position.toLong()
+        return view
     }
 
     private class ViewHolder(view: View) {

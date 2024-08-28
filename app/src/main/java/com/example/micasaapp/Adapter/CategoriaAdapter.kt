@@ -24,37 +24,32 @@ class CategoriaAdapter(private val context: Context, private var categorias: Lis
         notifyDataSetChanged()
     }
 
-    override fun getCount(): Int {
-        return filteredCategorias.size
-    }
+    override fun getCount(): Int = filteredCategorias.size
 
-    override fun getView(position: Int, view: View?, viewGroup: ViewGroup?): View {
+    override fun getItem(position: Int): CategoriasModel = filteredCategorias[position]
+
+    override fun getItemId(position: Int): Long = position.toLong()
+
+    override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val viewHolder: ViewHolder
-        val rowView: View?
+        val view: View
 
-        if (view == null) {
-            rowView = LayoutInflater.from(context).inflate(R.layout.recyclerview_categoria, viewGroup, false)
-            viewHolder = ViewHolder(rowView)
-            rowView.tag = viewHolder
+        if (convertView == null) {
+            view = LayoutInflater.from(context).inflate(R.layout.recyclerview_categoria, parent, false)
+            viewHolder = ViewHolder(view)
+            view.tag = viewHolder
         } else {
-            rowView = view
-            viewHolder = rowView.tag as ViewHolder
+            view = convertView
+            viewHolder = view.tag as ViewHolder
         }
 
-        with(filteredCategorias[position]) {
-            viewHolder.txtTitulo.text = nombreCategoria
-            viewHolder.imgPortada.setImageDrawable(ContextCompat.getDrawable(context, obtenerImagenPorCategoria(idCategoria)!!))
+        val categoria = getItem(position)
+        viewHolder.apply {
+            txtTitulo.text = categoria.nombreCategoria
+            imgPortada.setImageDrawable(ContextCompat.getDrawable(context, obtenerImagenPorCategoria(categoria.idCategoria)!!))
         }
 
-        return rowView!!
-    }
-
-    override fun getItem(position: Int): Any {
-        return filteredCategorias[position]
-    }
-
-    override fun getItemId(position: Int): Long {
-        return position.toLong()
+        return view
     }
 
     private class ViewHolder(view: View) {
