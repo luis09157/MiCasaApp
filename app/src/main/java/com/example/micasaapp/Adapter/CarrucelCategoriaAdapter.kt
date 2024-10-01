@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.micasaapp.Data.CategoriasModel
 import com.example.micasaapp.Util.UtilHelper
+import com.google.android.material.imageview.ShapeableImageView
 import com.ninodev.micasaapp.R
 import de.hdodenhof.circleimageview.CircleImageView
 
@@ -32,7 +33,7 @@ class CarrucelCategoriaAdapter(
     override fun getItemCount(): Int = categorias.size
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val image: CircleImageView = itemView.findViewById(R.id.image_view)
+        private val image: ShapeableImageView = itemView.findViewById(R.id.image_view)
         private val name: TextView = itemView.findViewById(R.id.name)
 
         fun bind(categoria: CategoriasModel) {

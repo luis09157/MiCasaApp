@@ -9,7 +9,7 @@
     <!-- Vista de "No hay datos" -->
     <include
         android:id="@+id/fragment_no_data"
-        layout="@layout/fragment_no_data"/>
+        layout="@layout/fragment_no_data" />
 
     <!-- Animación de carga -->
     <com.airbnb.lottie.LottieAnimationView
@@ -60,12 +60,17 @@
             </LinearLayout>
 
             <!-- Campo de búsqueda -->
-            <androidx.appcompat.widget.SearchView
-                android:id="@+id/searchView"
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:iconifiedByDefault="false"
-                app:queryHint="Buscar..." />
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/searchView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Buscar..."
+                    android:inputType="text" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <!-- Carrusel de imágenes -->
             <FrameLayout
@@ -76,7 +81,6 @@
                     android:id="@+id/viewPager"
                     android:layout_width="match_parent"
                     android:layout_height="250dp"
-                    android:layout_marginTop="10dp"
                     android:gravity="center" />
 
                 <me.relex.circleindicator.CircleIndicator3
@@ -85,63 +89,6 @@
                     android:layout_height="20dp"
                     android:layout_gravity="bottom|center" />
             </FrameLayout>
-
-            <!-- Botones de acción -->
-           <!-- <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:orientation="horizontal">
-
-                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="left"
-                    android:orientation="horizontal">
-
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="135dp"
-                        android:layout_height="wrap_content"
-                        android:backgroundTint="@color/naranja_claro"
-                        app:cardCornerRadius="20dp">
-
-                        <TextView
-                            android:id="@+id/btn_categorias"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_margin="5dp"
-                            android:fontFamily="@font/zen_bold"
-                            android:gravity="center_vertical|center"
-                            android:text="Categorías"
-                            android:textColor="@color/white"
-                            android:textSize="20sp" />
-                    </androidx.cardview.widget.CardView>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="right">
-
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="135dp"
-                        android:layout_height="wrap_content"
-                        android:backgroundTint="@color/naranja_claro"
-                        app:cardCornerRadius="20dp">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_margin="5dp"
-                            android:fontFamily="@font/zen_bold"
-                            android:gravity="center"
-                            android:text="Mostrar todo"
-                            android:textColor="@color/white"
-                            android:textSize="20sp" />
-                    </androidx.cardview.widget.CardView>
-                </LinearLayout>
-            </LinearLayout>-->
 
             <!-- RecyclerView para categorías -->
             <androidx.recyclerview.widget.RecyclerView
