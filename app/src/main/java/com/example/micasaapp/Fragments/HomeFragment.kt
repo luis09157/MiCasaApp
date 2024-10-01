@@ -22,7 +22,8 @@ import com.example.micasaapp.Model.BannerModel
 import com.example.micasaapp.Data.CategoriasModel
 import com.example.micasaapp.Fragments.CategoriasDetalleFragment
 import com.example.micasaapp.Fragments.CategoriasFragment
-import com.example.micasaapp.Model.TrabajosHomeModel
+import com.example.micasaapp.Fragments.TrabajadorDetalleFragment
+import com.example.micasaapp.Model.TrabajadorModel
 import com.example.micasaapp.Util.MessageUtil
 import com.example.micasaapp.Util.NetworkErrorUtil
 import com.example.micasaapp.Util.UtilHelper
@@ -31,7 +32,6 @@ import com.ninodev.micasaapp.databinding.FragmentHomeBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import me.relex.circleindicator.CircleIndicator3
 
 class HomeFragment : Fragment() {
     private val TAG: String = "HomeFragment"
@@ -40,7 +40,7 @@ class HomeFragment : Fragment() {
     private val DOUBLE_BACK_PRESS_INTERVAL = 5000L // Intervalo en milisegundos para presionar dos veces BACK
     private var doubleBackToExitPressedOnce = false
     private var listCategoriasMoshi: MutableList<CategoriasModel> = mutableListOf()
-    private var trabajosList: List<TrabajosHomeModel> = listOf()
+    private var trabajosList: List<TrabajadorModel> = listOf()
     private var bannersList: List<BannerModel> = listOf()
 
     companion object {
@@ -145,8 +145,13 @@ class HomeFragment : Fragment() {
     }
 
     private fun initListeners() {
-        binding.btnCategorias.setOnClickListener {
+       /* binding.btnCategorias.setOnClickListener {
             UtilHelper.replaceFragment(requireContext(), CategoriasFragment())
+        }*/
+        binding.gridListaTrabajos.setOnItemClickListener { adapterView, view, i, l ->
+            TrabajadorDetalleFragment._FLAG_HOME = true
+            TrabajadorDetalleFragment._TRABAJADOR_GLOBAL = trabajosList[i]
+            UtilHelper.replaceFragment(requireContext(), TrabajadorDetalleFragment())
         }
     }
 
@@ -226,6 +231,7 @@ class HomeFragment : Fragment() {
         hideLoadingAnimation()
         val adapter = TrabajosHomeAdapter(requireContext(), trabajosList)
         binding.gridListaTrabajos.adapter = adapter
+
     }
 
     override fun onDestroyView() {

@@ -7,12 +7,13 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import com.bumptech.glide.Glide
-import com.example.micasaapp.Model.TrabajosHomeModel
+import com.example.micasaapp.Model.TrabajadorModel
 import com.ninodev.micasaapp.R
 
-class TrabajosHomeAdapter(private val context: Context, private var trabajosHome: List<TrabajosHomeModel>) : BaseAdapter() {
-    private var filteredTrabajosHome: List<TrabajosHomeModel> = trabajosHome
+class TrabajosHomeAdapter(private val context: Context, private var trabajosHome: List<TrabajadorModel>) : BaseAdapter() {
+    private var filteredTrabajosHome: List<TrabajadorModel> = trabajosHome
 
     fun filter(query: String) {
         filteredTrabajosHome = if (query.isBlank()) {
@@ -38,6 +39,10 @@ class TrabajosHomeAdapter(private val context: Context, private var trabajosHome
         } else {
             rowView = view
             viewHolder = rowView.tag as ViewHolder
+        }
+
+        viewHolder.btnMeGusta.setOnClickListener {
+            Toast.makeText(context, "Le diste me gusta (Y)",Toast.LENGTH_SHORT).show()
         }
 
         with(filteredTrabajosHome[position]) {
@@ -69,5 +74,6 @@ class TrabajosHomeAdapter(private val context: Context, private var trabajosHome
         val txtProfecion: TextView = view.findViewById(R.id.txtProfecion)
         val txtDireccion: TextView = view.findViewById(R.id.txtDireccion)
         val imagen: ImageView = view.findViewById(R.id.imagen)
+        val btnMeGusta: ImageView = view.findViewById(R.id.btnMeGusta)
     }
 }

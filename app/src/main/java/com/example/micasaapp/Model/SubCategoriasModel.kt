@@ -8,5 +8,6 @@ import com.squareup.moshi.JsonClass
 data class SubCategoriasModel(
     @Json(name = "idSubcategoria") val idSubCategoria: Int,
     @Json(name = "nombreSubcategoria") val nombreSubcategoria: String,
-    @Json(name = "idCategoria") val idCategoria: Int
+    @Json(name = "idCategoria") val idCategoria: Int,
+    @Json(name = "imagenSubcategoria") val imagenSubcategoria: String
 )

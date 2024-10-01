@@ -82,7 +82,7 @@ class TrabajadoresFragment : Fragment() {
         requireView().requestFocus()
         requireView().setOnKeyListener { _, keyCode, event ->
             if (event.action == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
-                UtilHelper.replaceFragment(requireContext(), CategoriasFragment())
+                UtilHelper.replaceFragment(requireContext(), CategoriasDetalleFragment())
                 true
             } else false
         }

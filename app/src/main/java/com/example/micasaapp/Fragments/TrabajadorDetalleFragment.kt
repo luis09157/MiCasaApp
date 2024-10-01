@@ -11,9 +11,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
+import com.bumptech.glide.Glide
 import com.example.micasaapp.Adapter.ImageAdapter
 import com.example.micasaapp.Api.ApiClient
 import com.example.micasaapp.Api.Config
+import com.example.micasaapp.Api.DataConfig
 import com.example.micasaapp.Model.FotoTrabajoModel
 import com.example.micasaapp.Model.ProveedorResponse
 import com.example.micasaapp.Model.TrabajadorModel
@@ -38,6 +40,7 @@ class TrabajadorDetalleFragment : Fragment() {
     private lateinit var runnable: Runnable
     companion object{
         var _TRABAJADOR_GLOBAL : TrabajadorModel = TrabajadorModel()
+        var _FLAG_HOME : Boolean = false
     }
 
     override fun onCreateView(
@@ -46,6 +49,10 @@ class TrabajadorDetalleFragment : Fragment() {
     ): View {
         _binding = FragmentTrabajadorDetalleDetalleBinding.inflate(inflater, container, false)
         val root: View = binding.root
+
+        if (_TRABAJADOR_GLOBAL.idProveedor != 0){
+          //  DataConfig.ID_SUBCATEGORIA = _TRABAJADOR_GLOBAL.
+        }
 
         showLoadingAnimation()
         fetchProveedorData()
@@ -95,6 +102,12 @@ class TrabajadorDetalleFragment : Fragment() {
 
     private fun handleProveedorResult(result: ProveedorResponse) {
         hideLoadingAnimation()
+
+       /* Glide.with(binding.imagenPerfil)
+            .load(result.datosProveedor.)
+            .placeholder(R.drawable.placeholder_image)
+            .error(R.drawable.error_image)
+            .into(binding.imagenPerfil)*/
 
         binding.txtTelefono.text = result.datosProveedor.telefono
         binding.txtNombre.text = "${result.datosProveedor.nombre} ${result.datosProveedor.apellidoPaterno} ${result.datosProveedor.apellidoMaterno}"
@@ -147,7 +160,12 @@ class TrabajadorDetalleFragment : Fragment() {
             it.requestFocus()
             it.setOnKeyListener { _, keyCode, event ->
                 if (event.action == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
-                    UtilHelper.replaceFragment(requireContext(), HomeFragment())
+                    if(_FLAG_HOME){
+                        UtilHelper.replaceFragment(requireContext(), HomeFragment())
+                    }else{
+                        UtilHelper.replaceFragment(requireContext(), TrabajadoresFragment())
+                    }
+
                     true
                 } else {
                     false

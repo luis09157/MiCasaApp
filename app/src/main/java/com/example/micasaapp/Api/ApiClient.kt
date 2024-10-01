@@ -37,7 +37,7 @@ class ApiClient(private val baseUrl: String) {
         return executeRequest(request, ::parseSubCategorias)
     }
 
-    fun getTrabajosHome(): List<TrabajosHomeModel> {
+    fun getTrabajosHome(): List<TrabajadorModel> {
         val request = Request.Builder()
             .url("$baseUrl/proveedor")
             .build()
@@ -93,9 +93,9 @@ class ApiClient(private val baseUrl: String) {
         return adapter.fromJson(responseBody.orEmpty()) ?: emptyList()
     }
 
-    private fun parseTrabajosHome(responseBody: String?): List<TrabajosHomeModel> {
-        val adapter: JsonAdapter<List<TrabajosHomeModel>> = moshi.adapter(
-            Types.newParameterizedType(List::class.java, TrabajosHomeModel::class.java)
+    private fun parseTrabajosHome(responseBody: String?): List<TrabajadorModel> {
+        val adapter: JsonAdapter<List<TrabajadorModel>> = moshi.adapter(
+            Types.newParameterizedType(List::class.java, TrabajadorModel::class.java)
         )
         return adapter.fromJson(responseBody.orEmpty()) ?: emptyList()
     }
