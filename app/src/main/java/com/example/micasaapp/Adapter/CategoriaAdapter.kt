@@ -7,10 +7,8 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.example.micasaapp.Data.CategoriasModel
-import com.example.micasaapp.Util.UtilHelper.Companion.obtenerImagenPorCategoria
 import com.ninodev.micasaapp.R
 
 class CategoriaAdapter(private val context: Context, private var categorias: List<CategoriasModel>) : BaseAdapter() {

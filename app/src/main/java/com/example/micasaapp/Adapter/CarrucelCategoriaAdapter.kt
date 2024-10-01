@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.micasaapp.Data.CategoriasModel
 import com.example.micasaapp.Util.UtilHelper
 import com.ninodev.micasaapp.R
@@ -35,10 +36,11 @@ class CarrucelCategoriaAdapter(
         private val name: TextView = itemView.findViewById(R.id.name)
 
         fun bind(categoria: CategoriasModel) {
-            val imageResource = UtilHelper.obtenerImagenPorCategoria(categoria.idCategoria)
-            imageResource?.let {
-                image.setImageDrawable(ContextCompat.getDrawable(mContext, it))
-            }
+            Glide.with(image)
+                .load(categoria.imagenCategoria)
+                .placeholder(R.drawable.placeholder_image)
+                .error(R.drawable.error_image)
+                .into(image)
             name.text = categoria.nombreCategoria
             itemView.setOnClickListener { listener(categoria) }
         }

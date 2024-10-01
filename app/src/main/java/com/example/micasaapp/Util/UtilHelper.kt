@@ -22,10 +22,5 @@ class UtilHelper{
             ft.commit()
         }
 
-        fun obtenerImagenPorCategoria(categoriaId: Int): Int? {
-            val categoria = DataConfig.LISTACATEGORIAS.find { it.idCategoria == categoriaId }
-            return categoria?.drawableResId
-        }
-
     }
 }

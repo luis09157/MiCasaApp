@@ -10,7 +10,6 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.example.micasaapp.Model.SubCategoriasModel
-import com.example.micasaapp.Util.UtilHelper.Companion.obtenerImagenPorCategoria
 import com.ninodev.micasaapp.R
 
 class SubCategoriaAdapter(private val context: Context, private var subCategorias: List<SubCategoriasModel>) : BaseAdapter() {
@@ -52,7 +51,6 @@ class SubCategoriaAdapter(private val context: Context, private var subCategoria
                 .placeholder(R.drawable.placeholder_image)
                 .error(R.drawable.error_image)
                 .into(imgPortada)
-            imgPortada.setImageDrawable(ContextCompat.getDrawable(context, obtenerImagenPorCategoria(subCategoria.idCategoria)!!))
         }
 
         return view
