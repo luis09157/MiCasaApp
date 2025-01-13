@@ -11,11 +11,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
-import com.bumptech.glide.Glide
 import com.example.micasaapp.Adapter.ImageAdapter
 import com.example.micasaapp.Api.ApiClient
 import com.example.micasaapp.Api.Config
-import com.example.micasaapp.Api.DataConfig
 import com.example.micasaapp.Model.FotoTrabajoModel
 import com.example.micasaapp.Model.ProveedorResponse
 import com.example.micasaapp.Model.TrabajadorModel
@@ -63,7 +61,7 @@ class TrabajadorDetalleFragment : Fragment() {
     private fun showLoadingAnimation() {
         binding.lottieAnimationView.apply {
             visibility = View.VISIBLE
-            setAnimation(R.raw.avionsito_loading)
+            setAnimation(R.raw.casa_loading)
             playAnimation()
         }
         binding.contProveedor.visibility = View.GONE

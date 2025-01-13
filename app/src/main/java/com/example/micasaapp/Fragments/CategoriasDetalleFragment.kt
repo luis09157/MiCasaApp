@@ -46,7 +46,7 @@ class CategoriasDetalleFragment : Fragment() {
     private fun showLoadingAnimation() {
         binding.lottieAnimationView.apply {
             visibility = View.VISIBLE
-            setAnimation(R.raw.avionsito_loading) // Reemplaza con tu archivo JSON
+            setAnimation(R.raw.casa_loading) // Reemplaza con tu archivo JSON
             playAnimation()
         }
         binding.contSubCategorias.visibility = View.GONE

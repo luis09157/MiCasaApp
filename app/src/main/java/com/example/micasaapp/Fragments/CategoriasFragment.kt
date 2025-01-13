@@ -13,7 +13,6 @@ import com.example.micasaapp.Api.ApiClient
 import com.example.micasaapp.Api.Config
 import com.example.micasaapp.Api.DataConfig
 import com.example.micasaapp.Data.CategoriasModel
-import com.example.micasaapp.Util.DialogUtil
 import com.example.micasaapp.Util.MessageUtil
 import com.example.micasaapp.Util.NetworkErrorUtil
 import com.example.micasaapp.Util.UtilHelper
@@ -46,7 +45,7 @@ class CategoriasFragment : Fragment() {
     private fun showLoadingAnimation() {
         binding.lottieAnimationView.apply {
             visibility = View.VISIBLE
-            setAnimation(R.raw.avionsito_loading) // Reemplaza con tu archivo JSON
+            setAnimation(R.raw.casa_loading) // Reemplaza con tu archivo JSON
             playAnimation()
         }
         binding.contCategorias.visibility = View.GONE

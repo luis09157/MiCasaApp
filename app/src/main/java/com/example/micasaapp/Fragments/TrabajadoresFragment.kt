@@ -6,24 +6,17 @@ import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.micasaapp.Adapter.CarrucelCategoriaAdapter
 import com.example.micasaapp.Adapter.TrabajadorAdapter
 import com.example.micasaapp.Api.ApiClient
 import com.example.micasaapp.Api.Config
-import com.example.micasaapp.Api.DataConfig
-import com.example.micasaapp.Data.CategoriasModel
 import com.example.micasaapp.Model.TrabajadorModel
 import com.example.micasaapp.Util.MessageUtil
 import com.example.micasaapp.Util.NetworkErrorUtil
 import com.ninodev.micasaapp.R
 import com.example.micasaapp.Util.UtilHelper
 import com.ninodev.micasaapp.databinding.FragmentTrabajadoresBinding
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -96,7 +89,7 @@ class TrabajadoresFragment : Fragment() {
     private fun showLoadingAnimation() {
         binding.lottieAnimationView.apply {
             visibility = View.VISIBLE
-            setAnimation(R.raw.avionsito_loading) // Reemplaza con tu archivo JSON
+            setAnimation(R.raw.casa_loading) // Reemplaza con tu archivo JSON
             playAnimation()
         }
         binding.contSubCategorias.visibility = View.GONE

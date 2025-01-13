@@ -21,7 +21,6 @@ import com.example.micasaapp.Api.DataConfig
 import com.example.micasaapp.Model.BannerModel
 import com.example.micasaapp.Data.CategoriasModel
 import com.example.micasaapp.Fragments.CategoriasDetalleFragment
-import com.example.micasaapp.Fragments.CategoriasFragment
 import com.example.micasaapp.Fragments.TrabajadorDetalleFragment
 import com.example.micasaapp.Model.TrabajadorModel
 import com.example.micasaapp.Util.MessageUtil
@@ -245,7 +244,7 @@ class HomeFragment : Fragment() {
     private fun showLoadingAnimation() {
         binding.lottieAnimationView.apply {
             visibility = View.VISIBLE
-            setAnimation(R.raw.avionsito_loading) // Reemplaza con tu archivo JSON
+            setAnimation(R.raw.casa_loading) // Reemplaza con tu archivo JSON
             playAnimation()
         }
         binding.contHome.visibility = View.GONE
