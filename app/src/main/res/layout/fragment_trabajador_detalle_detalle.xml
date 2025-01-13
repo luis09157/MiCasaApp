@@ -23,13 +23,14 @@
         android:id="@+id/cont_proveedor"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="20dp"
+        android:layout_margin="10dp"
         android:orientation="vertical">
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="250dp"
-            app:cardCornerRadius="25dp"
+            app:cardCornerRadius="10dp"
+            android:layout_marginTop="20dp"
             android:backgroundTint="@color/white">
             <LinearLayout
                 android:layout_width="match_parent"
