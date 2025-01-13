@@ -39,7 +39,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_margin="5dp"
                 android:ellipsize="end"
-                android:fontFamily="@font/zen_bold"
+                android:fontFamily="@font/poppins_bold"
                 android:gravity="center"
                 android:maxLines="2"
                 android:text="Aire Acondicionado y Refrigeración"

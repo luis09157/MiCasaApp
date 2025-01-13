@@ -34,6 +34,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:gravity="center"
+                android:fontFamily="@font/poppins_bold"
                 android:textStyle="bold"
                 android:textSize="17dp"
                 android:maxLines="2"

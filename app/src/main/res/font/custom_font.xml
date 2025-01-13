@@ -2,27 +2,27 @@
 <font-family xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <font
-        app:font="@font/zen_black"
+        app:font="@font/poppins_black"
         app:fontStyle="normal"
         app:fontWeight="900"/>
 
     <font
-        app:font="@font/zen_bold"
+        app:font="@font/poppins_bold"
         app:fontStyle="normal"
         app:fontWeight="700"/>
 
     <font
-        app:font="@font/zen_light"
+        app:font="@font/poppins_light"
         app:fontStyle="normal"
         app:fontWeight="300"/>
 
     <font
-        app:font="@font/zen_medium"
+        app:font="@font/poppins_medium"
         app:fontStyle="normal"
         app:fontWeight="500"/>
 
     <font
-        app:font="@font/zen_regular"
+        app:font="@font/poppins_regular"
         app:fontStyle="normal"
         app:fontWeight="400"/>
 
