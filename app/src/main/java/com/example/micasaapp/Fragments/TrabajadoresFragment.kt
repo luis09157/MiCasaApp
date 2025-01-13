@@ -50,6 +50,7 @@ class TrabajadoresFragment : Fragment() {
         binding.listTrabajadores.adapter = trabajadorAdapter
         binding.listTrabajadores.divider = null
         binding.listTrabajadores.setOnItemClickListener { adapterView, view, i, l ->
+            TrabajadorDetalleFragment._FLAG_HOME = false
             TrabajadorDetalleFragment._TRABAJADOR_GLOBAL = trabajadorList[i]
             UtilHelper.replaceFragment(requireContext(), TrabajadorDetalleFragment())
         }

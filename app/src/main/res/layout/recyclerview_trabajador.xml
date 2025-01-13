@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="140dp"
         app:cardCornerRadius="20dp"
+        android:backgroundTint="@color/white"
         android:background="@color/white"
         tools:ignore="MissingConstraints">
         <LinearLayout
