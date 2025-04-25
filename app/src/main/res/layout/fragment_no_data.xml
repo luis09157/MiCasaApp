@@ -8,19 +8,34 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="gone">
+        
         <ImageView
-            android:src="@drawable/no_data_found"
-            android:layout_width="300dp"
-            android:layout_height="300dp"/>
+            android:id="@+id/imageNoData"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:src="@drawable/ic_no_data"
+            android:contentDescription="Icono de no hay datos"/>
 
         <TextView
+            android:id="@+id/textNoData"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="No se encontraro resultados."
-            android:textSize="25dp"
+            android:text="No se encontraron resultados"
+            android:textSize="20sp"
             android:textStyle="bold"
-            android:textColor="@color/black"/>
+            android:textColor="@color/md_theme_onBackground"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/poppins_medium"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonRetry"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Reintentar"
+            android:layout_marginTop="16dp"
+            android:visibility="gone"/>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -72,8 +72,4 @@
         <item name="android:textColor">#757575</item>
         <item name="rippleColor">#a4a4a4</item>
     </style>
-    <style name="CircleImageViewStyle">
-        <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">50%</item> <!-- Hacemos las esquinas totalmente redondeadas -->
-    </style>
 </resources>

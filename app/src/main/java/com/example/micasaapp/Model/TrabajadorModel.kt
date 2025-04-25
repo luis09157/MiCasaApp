@@ -11,6 +11,6 @@ data class TrabajadorModel(
     @Json(name = "direccion") val direccion: String = "",
     @Json(name = "imagenTrabajo") val imagenTrabajo: String = "",
     @Json(name = "descripcion") val descripcion: String = "",
-@Json(name = "imagenPerfil") val imagenPerfil: String = ""
-
+    @Json(name = "imagenPerfil") val imagenPerfil: String = "",
+    @Json(name = "calificacion") val calificacion: Float = 0f
 )

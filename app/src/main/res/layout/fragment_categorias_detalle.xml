@@ -1,51 +1,139 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_color"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:background="@color/md_theme_surface">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        app:elevation="0dp">
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/spacing_medium">
+
+                <TextView
+                    android:id="@+id/txtTituloCategoria"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:textColor="@color/md_theme_onSurface"
+                    android:textSize="28sp"
+                    android:text="Subcategorías"
+                    app:layout_collapseMode="parallax"/>
+
+                <TextView
+                    android:id="@+id/txtDescripcionCategoria"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="@font/poppins"
+                    android:textColor="@color/md_theme_onSurfaceVariant"
+                    android:textSize="16sp"
+                    android:text="Selecciona el tipo de servicio que necesitas"/>
+
+            </LinearLayout>
+
+            <com.google.android.material.search.SearchBar
+                android:id="@+id/searchBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/spacing_medium"
+                android:hint="Buscar subcategoría..."
+                app:menu="@menu/top_app_bar" />
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/contSubCategorias"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/listSubCategoriaDetalle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:paddingHorizontal="@dimen/spacing_medium"
+                android:paddingTop="@dimen/spacing_small"
+                android:paddingBottom="@dimen/spacing_large"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:spanCount="2"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/txtNoResults"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No se encontraron subcategorías"
+                android:textColor="@color/md_theme_onSurfaceVariant"
+                android:fontFamily="@font/poppins_medium"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
 
     <include
         android:id="@+id/fragment_no_data"
-        layout="@layout/fragment_no_data"/>
+        layout="@layout/fragment_no_data"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/lottieAnimationView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_gravity="center"
+        android:visibility="gone"
         app:lottie_autoPlay="true"
-        android:background="@color/white"
         app:lottie_loop="true"
-        android:visibility="gone" />
+        app:lottie_rawRes="@raw/casa_loading" />
 
-
-    <LinearLayout
-        android:id="@+id/contSubCategorias"
+    <com.google.android.material.search.SearchView
+        android:id="@+id/searchView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:hint="Buscar subcategoría..."
+        app:layout_anchor="@id/searchBar">
 
-        <LinearLayout
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/searchResultsRecyclerView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:orientation="horizontal">
-            <SearchView
-                android:id="@+id/searchSubCategoria"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:queryHint="Buscar..."/>
-
-        </LinearLayout>
-
-
-
-        <GridView
-            android:id="@+id/listSubCategoriaDetalle"
-            android:background="@color/background_color"
-            android:layout_width="match_parent"
-            android:visibility="visible"
             android:layout_height="match_parent"
-            android:numColumns="2" />
-    </LinearLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+            android:clipToPadding="false"
+            android:padding="@dimen/spacing_medium"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+    </com.google.android.material.search.SearchView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

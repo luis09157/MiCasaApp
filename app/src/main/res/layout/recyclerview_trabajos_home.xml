@@ -1,114 +1,187 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="5dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:background="@color/background_color">
+    android:layout_height="wrap_content"
+    android:padding="@dimen/spacing_small">
 
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
-        android:layout_height="220dp"
-        app:cardCornerRadius="10dp"
-        android:background="@color/white"
-        tools:ignore="MissingConstraints">
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="@dimen/corner_radius_medium"
+        app:cardElevation="@dimen/elevation_small"
+        app:strokeWidth="0dp"
+        app:cardPreventCornerOverlap="true"
+        app:rippleColor="@color/md_theme_primaryContainer">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-            <FrameLayout
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/imagen"
                 android:layout_width="match_parent"
-                android:layout_height="130dp">
+                android:layout_height="0dp"
+                android:scaleType="centerCrop"
+                app:layout_constraintDimensionRatio="4:3"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.TopRounded" />
+
+            <View
+                android:id="@+id/imageShadow"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:background="@drawable/image_bottom_shadow"
+                app:layout_constraintBottom_toBottomOf="@id/imagen"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipRating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/spacing_medium"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_body"
+                app:chipBackgroundColor="@color/md_theme_primary"
+                app:chipIcon="@drawable/ic_star"
+                app:chipIconTint="@color/white"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:text="4.8" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/btnMeGustaContainer"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_margin="@dimen/spacing_medium"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="@dimen/elevation_medium"
+                app:rippleColor="@color/md_theme_primaryContainer"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
                 <ImageView
-                    android:id="@+id/imagen"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/img_recyclerview"
-                    android:scaleType="centerCrop"/>
+                    android:id="@+id/btnMeGusta"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_corazon" />
+            </com.google.android.material.card.MaterialCardView>
 
-            </FrameLayout>
-
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/infoContainer"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:layout_weight="1">
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="@dimen/spacing_medium"
+                android:paddingVertical="@dimen/spacing_medium"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/imagen">
 
                 <TextView
                     android:id="@+id/txtNombreTrabajador"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginRight="25dp"
-                    android:textColor="@color/black"
-                    android:fontFamily="@font/poppins_black"
-                    android:layout_weight="1"
-                    android:gravity="left|center"
-                    android:maxLines="1"
-                    android:text="Luis Alfonso Niño"
-                    android:textStyle="bold"
-                    app:autoSizeMaxTextSize="20dp"
-                    app:autoSizeMinTextSize="18dp"
-                    app:autoSizeTextType="uniform" />
-
-                <TextView
-                    android:id="@+id/txtProfecion"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginRight="25dp"
-                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
                     android:fontFamily="@font/poppins_bold"
-                    android:gravity="left|center"
                     android:maxLines="1"
-                    android:text="Arquitecto"
-                    android:textColor="@color/black"
-                    app:autoSizeMaxTextSize="18sp"
-                    app:autoSizeMinTextSize="10sp"
-                    app:autoSizeTextType="uniform" />
+                    android:textColor="@color/md_theme_onSurface"
+                    android:textSize="20sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="Luis Alfonso Niño" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:layout_marginLeft="5dp"
-                    android:orientation="horizontal">
-                    <ImageView
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/chipGroupServicios"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_small"
+                    app:chipSpacingHorizontal="@dimen/spacing_small"
+                    app:singleLine="true"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/txtNombreTrabajador">
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/txtProfecion"
+                        style="@style/CustomChipStyle"
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:padding="2dp"
-                        android:src="@drawable/ic_location"/>
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/text_size_body"
+                        tools:text="Arquitecto" />
+
+                </com.google.android.material.chip.ChipGroup>
+
+                <View
+                    android:id="@+id/divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="@dimen/spacing_medium"
+                    android:background="@color/md_theme_outlineVariant"
+                    app:layout_constraintTop_toBottomOf="@id/chipGroupServicios" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_medium"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/divider">
+
+                    <ImageView
+                        android:id="@+id/icLocation"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/ic_location"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:tint="@color/md_theme_primary" />
+
                     <TextView
                         android:id="@+id/txtDireccion"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="left|center"
-                        android:layout_marginRight="25dp"
-                        android:fontFamily="@font/poppins_bold"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/spacing_small"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/poppins_regular"
                         android:maxLines="1"
-                        android:text="San Nicolas de los Garza"
-                        android:textStyle="bold"
-                        app:autoSizeMaxTextSize="18sp"
-                        app:autoSizeMinTextSize="10sp"
-                        app:autoSizeTextType="uniform" />
-                </LinearLayout>
+                        android:textColor="@color/md_theme_onSurfaceVariant"
+                        android:textSize="@dimen/text_size_body"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/viewProfile"
+                        app:layout_constraintStart_toEndOf="@id/icLocation"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="San Nicolas de los Garza" />
 
-            </LinearLayout>
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/viewProfile"
+                        style="@style/Widget.MaterialComponents.Button.TextButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_medium"
+                        android:minWidth="0dp"
+                        android:minHeight="40dp"
+                        android:text="Ver perfil"
+                        android:textAllCaps="false"
+                        android:textColor="@color/md_theme_primary"
+                        android:textSize="@dimen/text_size_body"
+                        app:icon="@drawable/ic_arrow_right"
+                        app:iconGravity="end"
+                        app:iconPadding="4dp"
+                        app:iconTint="@color/md_theme_primary"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-        </LinearLayout>
-        <ImageView
-            android:id="@+id/btnMeGusta"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_gravity="right|bottom"
-            android:layout_marginBottom="75dp"
-            android:layout_marginRight="5dp"
-            android:src="@drawable/ic_corazon"/>
-    </androidx.cardview.widget.CardView>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
 </FrameLayout>

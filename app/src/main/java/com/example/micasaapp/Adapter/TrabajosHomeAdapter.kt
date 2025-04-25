@@ -9,11 +9,18 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.request.RequestOptions
 import com.example.micasaapp.Model.TrabajadorModel
+import com.google.android.material.button.MaterialButton
+import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipGroup
 import com.ninodev.micasaapp.R
+import kotlin.random.Random
 
 class TrabajosHomeAdapter(private val context: Context, private var trabajosHome: List<TrabajadorModel>) : BaseAdapter() {
     private var filteredTrabajosHome: List<TrabajadorModel> = trabajosHome
+    private val favoritos = mutableSetOf<Int>() // Simular favoritos
 
     fun filter(query: String) {
         filteredTrabajosHome = if (query.isBlank()) {
@@ -41,24 +48,56 @@ class TrabajosHomeAdapter(private val context: Context, private var trabajosHome
             viewHolder = rowView.tag as ViewHolder
         }
 
-        viewHolder.btnMeGusta.setOnClickListener {
-            Toast.makeText(context, "Le diste me gusta (Y)",Toast.LENGTH_SHORT).show()
+        val trabajador = filteredTrabajosHome[position]
+        
+        // Configurar datos del trabajador
+        viewHolder.txtNombreTrabajador.text = trabajador.nombreCompleto
+        viewHolder.txtProfecion.text = trabajador.categorias
+        viewHolder.txtDireccion.text = trabajador.direccion
+
+        // Añadir calificación (simulada)
+        val rating = 4.0 + (Random.nextDouble() * 1.0)
+        viewHolder.chipRating.text = String.format("%.1f", rating)
+
+        // Usar Glide para cargar la imagen
+        Glide.with(context)
+            .load(trabajador.imagenTrabajo)
+            .placeholder(R.drawable.placeholder_image)
+            .error(R.drawable.error_image)
+            .into(viewHolder.imagen)
+
+        // Configurar botón favorito
+        val isFavorito = favoritos.contains(position)
+        configureHeartButton(viewHolder.btnMeGusta, isFavorito)
+        
+        viewHolder.btnMeGustaContainer.setOnClickListener {
+            // Alterna estado de favorito
+            if (isFavorito) {
+                favoritos.remove(position)
+            } else {
+                favoritos.add(position)
+            }
+            configureHeartButton(viewHolder.btnMeGusta, !isFavorito)
+            Toast.makeText(context, if (!isFavorito) "Añadido a favoritos" else "Eliminado de favoritos", Toast.LENGTH_SHORT).show()
         }
 
-        with(filteredTrabajosHome[position]) {
-            viewHolder.txtNombreTrabajador.text = nombreCompleto
-            viewHolder.txtProfecion.text = categorias
-            viewHolder.txtDireccion.text = direccion
-
-            // Usar Glide para cargar la imagen
-            Glide.with(context)
-                .load(imagenTrabajo) // Suponiendo que 'imagenTrabajo' es la URL de la imagen
-                .placeholder(R.drawable.placeholder_image) // Imagen de marcador de posición mientras se carga la imagen
-                .error(R.drawable.error_image) // Imagen de error si la carga falla
-                .into(viewHolder.imagen)
+        // Configurar el botón de ver perfil
+        viewHolder.viewProfile.setOnClickListener {
+            // Implementar navegación al perfil
+            Toast.makeText(context, "Ver perfil de ${trabajador.nombreCompleto}", Toast.LENGTH_SHORT).show()
         }
 
         return rowView!!
+    }
+
+    private fun configureHeartButton(imageView: ImageView, isFavorite: Boolean) {
+        if (isFavorite) {
+            imageView.setImageResource(R.drawable.ic_corazon_filled)
+            imageView.setColorFilter(context.getColor(R.color.md_theme_primary))
+        } else {
+            imageView.setImageResource(R.drawable.ic_corazon)
+            imageView.clearColorFilter()
+        }
     }
 
     override fun getItem(position: Int): Any {
@@ -71,9 +110,13 @@ class TrabajosHomeAdapter(private val context: Context, private var trabajosHome
 
     private class ViewHolder(view: View) {
         val txtNombreTrabajador: TextView = view.findViewById(R.id.txtNombreTrabajador)
-        val txtProfecion: TextView = view.findViewById(R.id.txtProfecion)
+        val txtProfecion: Chip = view.findViewById(R.id.txtProfecion)
         val txtDireccion: TextView = view.findViewById(R.id.txtDireccion)
         val imagen: ImageView = view.findViewById(R.id.imagen)
         val btnMeGusta: ImageView = view.findViewById(R.id.btnMeGusta)
+        val btnMeGustaContainer: View = view.findViewById(R.id.btnMeGustaContainer)
+        val chipRating: Chip = view.findViewById(R.id.chipRating)
+        val viewProfile: MaterialButton = view.findViewById(R.id.viewProfile)
+        val chipGroupServicios: ChipGroup = view.findViewById(R.id.chipGroupServicios)
     }
 }

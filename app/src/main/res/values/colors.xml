@@ -77,11 +77,13 @@
     <color name="md_theme_inverseOnSurface_mediumContrast">#FBE9E7</color> <!-- Rosa claro para texto en superficie inversa media -->
     <color name="md_theme_inversePrimary_mediumContrast">#F8BBD0</color> <!-- Rosa claro para primario inverso medio -->
 
-
+    <!-- Colores de compatibilidad con versiones anteriores -->
+    <color name="colorPrimary">@color/md_theme_primary</color>
+    <color name="colorPrimaryDark">@color/md_theme_primary_mediumContrast</color>
+    <color name="colorAccent">@color/md_theme_secondary</color>
 
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-
 
     <color name="background_color">#ECECEC</color>
 

@@ -37,6 +37,17 @@ class ApiClient(private val baseUrl: String) {
         return executeRequest(request, ::parseSubCategorias)
     }
 
+    fun getSubCategoriasByCategoria(idCategoria: Int): List<SubCategoriasModel> {
+        val url = "$baseUrl/subcategorias/$idCategoria"
+        Log.d("ApiClient", "URL de la solicitud: $url")
+
+        val request = Request.Builder()
+            .url(url)
+            .build()
+
+        return executeRequest(request, ::parseSubCategorias)
+    }
+
     fun getTrabajosHome(): List<TrabajadorModel> {
         val request = Request.Builder()
             .url("$baseUrl/proveedor")
@@ -74,6 +85,22 @@ class ApiClient(private val baseUrl: String) {
             .build()
 
         return executeRequest(request, ::parseProveedorResponse)
+    }
+
+    fun getTrabajadorById(idTrabajador: Int): TrabajadorModel {
+        val request = Request.Builder()
+            .url("$baseUrl/proveedor/$idTrabajador")
+            .build()
+
+        return executeRequest(request, ::parseTrabajador)
+    }
+
+    fun buscarTrabajadores(query: String): List<TrabajadorModel> {
+        val request = Request.Builder()
+            .url("$baseUrl/proveedor/buscar?q=$query")
+            .build()
+
+        return executeRequest(request, ::parseTrabajadores)
     }
 
     private fun <T> executeRequest(request: Request, parseFunction: (String?) -> T): T {
@@ -142,6 +169,19 @@ class ApiClient(private val baseUrl: String) {
             ),
             listaFotosTrabajo = emptyList(),
             listaCategorias = emptyList()
+        )
+    }
+
+    private fun parseTrabajador(responseBody: String?): TrabajadorModel {
+        val adapter: JsonAdapter<TrabajadorModel> = moshi.adapter(TrabajadorModel::class.java)
+        return adapter.fromJson(responseBody.orEmpty()) ?: TrabajadorModel(
+            idProveedor = 0,
+            nombreCompleto = "",
+            categorias = "",
+            direccion = "",
+            imagenTrabajo = "",
+            descripcion = "",
+            imagenPerfil = ""
         )
     }
 }

@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.GridLayoutManager
 import com.example.micasaapp.Adapter.SubCategoriaAdapter
 import com.example.micasaapp.Api.ApiClient
 import com.example.micasaapp.Api.Config
@@ -93,12 +94,17 @@ class CategoriasDetalleFragment : Fragment() {
     }
 
     private fun fetchSubCategorias() {
+        Log.d("CategoriasDetalleFragment", "Iniciando fetchSubCategorias con ID_CATEGORIA: ${DataConfig.ID_CATEGORIA}")
         lifecycleScope.launch {
             try {
                 val apiClient = ApiClient(Config._URLApi)
-                val result = withContext(Dispatchers.IO) { apiClient.getSubCategorias() }
+                val result = withContext(Dispatchers.IO) { 
+                    apiClient.getSubCategoriasByCategoria(DataConfig.ID_CATEGORIA) 
+                }
+                Log.d("CategoriasDetalleFragment", "Subcategorías obtenidas: ${result.size}")
                 handleSubCategoriasResult(result)
             } catch (e: Exception) {
+                Log.e("CategoriasDetalleFragment", "Error al obtener subcategorías", e)
                 handleSubCategoriasError(e)
             }
         }
@@ -108,11 +114,14 @@ class CategoriasDetalleFragment : Fragment() {
         hideLoadingAnimation()
 
         if (result.isNotEmpty()) {
+            listSubCategoriasMoshi.clear()
             listSubCategoriasMoshi.addAll(result)
             setupSubCategoriaAdapter(result)
             setupSearchView()
+            binding.txtNoResults.visibility = View.GONE
         } else {
             showNoData()
+            binding.fragmentNoData.textNoData.text = "No hay subcategorías disponibles"
         }
     }
 
@@ -125,24 +134,47 @@ class CategoriasDetalleFragment : Fragment() {
     }
 
     private fun setupSubCategoriaAdapter(subCategorias: List<SubCategoriasModel>) {
-        subCategoriaAdapter = SubCategoriaAdapter(requireContext(), subCategorias)
-        binding.listSubCategoriaDetalle.adapter = subCategoriaAdapter
-        binding.listSubCategoriaDetalle.setOnItemClickListener { _, _, i, _ ->
-            DataConfig.ID_SUBCATEGORIA = subCategorias[i].idSubCategoria
-            UtilHelper.replaceFragment(requireContext(), TrabajadoresFragment())
+        Log.d("CategoriasDetalleFragment", "Configurando adapter con ${subCategorias.size} subcategorías")
+        
+        binding.listSubCategoriaDetalle.apply {
+            layoutManager = GridLayoutManager(requireContext(), 2)
+            adapter = SubCategoriaAdapter(
+                requireContext(),
+                subCategorias
+            ) { subcategoria ->
+                try {
+                    Log.d("CategoriasDetalleFragment", "Subcategoría seleccionada: ${subcategoria.nombreSubcategoria} (ID: ${subcategoria.idSubCategoria})")
+                    DataConfig.ID_SUBCATEGORIA = subcategoria.idSubCategoria
+                    Log.d("CategoriasDetalleFragment", "Navegando a TrabajadoresFragment con ID_SUBCATEGORIA: ${DataConfig.ID_SUBCATEGORIA}")
+                    UtilHelper.replaceFragment(requireContext(), TrabajadoresFragment())
+                } catch (e: Exception) {
+                    Log.e("CategoriasDetalleFragment", "Error al navegar a TrabajadoresFragment", e)
+                    MessageUtil.showErrorMessage(requireContext(), requireView(), "Error al cargar los trabajadores")
+                }
+            }.also { 
+                subCategoriaAdapter = it 
+            }
         }
     }
 
     private fun setupSearchView() {
-        binding.searchSubCategoria.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                return false
-            }
+        binding.searchBar.setOnClickListener {
+            binding.searchView.show()
+        }
 
-            override fun onQueryTextChange(newText: String?): Boolean {
-                subCategoriaAdapter.filter(newText.orEmpty())
-                return true
+        binding.searchView.setupWithSearchBar(binding.searchBar)
+        binding.searchView.editText.setOnEditorActionListener { textView, actionId, event ->
+            val query = textView.text.toString().trim()
+            if (query.isNotEmpty()) {
+                subCategoriaAdapter.filter(query)
+                if (subCategoriaAdapter.getFilteredItemCount() == 0) {
+                    binding.txtNoResults.visibility = View.VISIBLE
+                } else {
+                    binding.txtNoResults.visibility = View.GONE
+                }
             }
-        })
+            binding.searchView.hide()
+            false
+        }
     }
 }

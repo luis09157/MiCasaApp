@@ -2,61 +2,50 @@ package com.example.micasaapp.Adapter
 
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.BaseAdapter
-import android.widget.ImageView
-import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.micasaapp.Data.CategoriasModel
-import com.ninodev.micasaapp.R
+import com.ninodev.micasaapp.databinding.RecyclerviewCategoriaBinding
 
-class CategoriaAdapter(private val context: Context, private var categorias: List<CategoriasModel>) : BaseAdapter() {
-    private var filteredCategorias: List<CategoriasModel> = categorias
+class CategoriaAdapter(
+    private val context: Context,
+    private val categorias: List<CategoriasModel>,
+    private val onCategoriaClick: (CategoriasModel) -> Unit
+) : RecyclerView.Adapter<CategoriaAdapter.CategoriaViewHolder>() {
 
-    fun filter(query: String) {
-        filteredCategorias = if (query.isBlank()) {
-            categorias
-        } else {
-            categorias.filter { it.nombreCategoria.contains(query, ignoreCase = true) }
+    inner class CategoriaViewHolder(private val binding: RecyclerviewCategoriaBinding) : 
+        RecyclerView.ViewHolder(binding.root) {
+        
+        fun bind(categoria: CategoriasModel) {
+            with(binding) {
+                txtTitulo.text = categoria.nombreCategoria
+                
+                // Cargar imagen con Glide
+                Glide.with(context)
+                    .load(categoria.imagenCategoria)
+                    .into(imgPortada)
+
+                // Configurar clic
+                root.setOnClickListener {
+                    onCategoriaClick(categoria)
+                }
+            }
         }
-        notifyDataSetChanged()
     }
 
-    override fun getCount(): Int = filteredCategorias.size
-
-    override fun getItem(position: Int): CategoriasModel = filteredCategorias[position]
-
-    override fun getItemId(position: Int): Long = position.toLong()
-
-    override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-        val viewHolder: ViewHolder
-        val view: View
-
-        if (convertView == null) {
-            view = LayoutInflater.from(context).inflate(R.layout.recyclerview_categoria, parent, false)
-            viewHolder = ViewHolder(view)
-            view.tag = viewHolder
-        } else {
-            view = convertView
-            viewHolder = view.tag as ViewHolder
-        }
-
-        val categoria = getItem(position)
-        viewHolder.apply {
-            txtTitulo.text = categoria.nombreCategoria
-            Glide.with(imgPortada)
-                .load(categoria.imagenCategoria)
-                .placeholder(R.drawable.placeholder_image)
-                .error(R.drawable.error_image)
-                .into(imgPortada)
-        }
-
-        return view
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoriaViewHolder {
+        val binding = RecyclerviewCategoriaBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
+        return CategoriaViewHolder(binding)
     }
 
-    private class ViewHolder(view: View) {
-        val txtTitulo: TextView = view.findViewById(R.id.txtTitulo)
-        val imgPortada: ImageView = view.findViewById(R.id.imgPortada)
+    override fun onBindViewHolder(holder: CategoriaViewHolder, position: Int) {
+        holder.bind(categorias[position])
     }
+
+    override fun getItemCount(): Int = categorias.size
 }

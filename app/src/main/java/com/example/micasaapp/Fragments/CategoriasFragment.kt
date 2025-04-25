@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.GridLayoutManager
 import com.example.micasaapp.Adapter.CategoriaAdapter
 import com.example.micasaapp.Api.ApiClient
 import com.example.micasaapp.Api.Config
@@ -28,6 +29,7 @@ class CategoriasFragment : Fragment() {
     private var _binding: FragmentCategoriasBinding? = null
     private val binding get() = _binding!!
     private var listCategoriasMoshi: MutableList<CategoriasModel> = mutableListOf()
+    private lateinit var categoriaAdapter: CategoriaAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,16 +38,44 @@ class CategoriasFragment : Fragment() {
         _binding = FragmentCategoriasBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        setupRecyclerView()
+        setupSearchView()
         showLoadingAnimation()
         fetchCategorias()
 
         return root
     }
 
+    private fun setupRecyclerView() {
+        categoriaAdapter = CategoriaAdapter(requireContext(), listCategoriasMoshi) { categoria ->
+            DataConfig.ID_CATEGORIA = categoria.idCategoria
+            UtilHelper.replaceFragment(requireContext(), CategoriasDetalleFragment())
+        }
+        
+        binding.listCategoria.apply {
+            layoutManager = GridLayoutManager(context, 2)
+            adapter = categoriaAdapter
+        }
+    }
+
+    private fun setupSearchView() {
+        binding.searchBar.setOnClickListener {
+            binding.searchView.show()
+        }
+
+        binding.searchView.setupWithSearchBar(binding.searchBar)
+        binding.searchView.editText.setOnEditorActionListener { textView, actionId, event ->
+            binding.searchBar.setText(binding.searchView.text)
+            binding.searchView.hide()
+            // Aquí puedes implementar la búsqueda si lo deseas
+            false
+        }
+    }
+
     private fun showLoadingAnimation() {
         binding.lottieAnimationView.apply {
             visibility = View.VISIBLE
-            setAnimation(R.raw.casa_loading) // Reemplaza con tu archivo JSON
+            setAnimation(R.raw.casa_loading)
             playAnimation()
         }
         binding.contCategorias.visibility = View.GONE
@@ -67,7 +97,14 @@ class CategoriasFragment : Fragment() {
             cancelAnimation()
         }
         binding.contCategorias.visibility = View.GONE
-        binding.fragmentNoData.contNoData.visibility = View.VISIBLE
+        with(binding.fragmentNoData) {
+            contNoData.visibility = View.VISIBLE
+            textNoData.text = "No hay categorías disponibles"
+            buttonRetry.setOnClickListener {
+                showLoadingAnimation()
+                fetchCategorias()
+            }
+        }
     }
 
     override fun onDestroyView() {
@@ -107,13 +144,9 @@ class CategoriasFragment : Fragment() {
         hideLoadingAnimation()
 
         if (result.isNotEmpty()) {
+            listCategoriasMoshi.clear()
             listCategoriasMoshi.addAll(result)
-            val categoriaAdapter = CategoriaAdapter(requireContext(), listCategoriasMoshi)
-            binding.listCategoria.adapter = categoriaAdapter
-            binding.listCategoria.setOnItemClickListener { _, _, i, _ ->
-                DataConfig.ID_CATEGORIA = listCategoriasMoshi[i].idCategoria
-                UtilHelper.replaceFragment(requireContext(), CategoriasDetalleFragment())
-            }
+            categoriaAdapter.notifyDataSetChanged()
         } else {
             showNoData()
         }

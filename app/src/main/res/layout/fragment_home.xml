@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_color">
+    android:background="@color/md_theme_background">
 
     <!-- Vista de "No hay datos" -->
     <include
@@ -22,93 +22,218 @@
         android:visibility="gone" />
 
     <!-- Contenedor principal con desplazamiento -->
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/cont_home"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="10dp"
-        tools:ignore="MissingConstraints">
+        android:layout_height="match_parent">
 
-        <!-- Contenido del scroll -->
-        <LinearLayout
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/cont_home"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:overScrollMode="never">
 
-            <!-- Cabecera con logo y nombre de la app -->
+            <!-- Contenido del scroll -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:padding="10dp">
+                android:orientation="vertical">
 
-                <ImageView
-                    android:layout_width="90dp"
-                    android:layout_height="70dp"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/ic_micasaapp" />
+                <!-- Cabecera con logo y nombre de la app en tarjeta elevada -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/spacing_medium"
+                    android:layout_marginTop="@dimen/spacing_medium"
+                    android:layout_marginBottom="@dimen/spacing_small"
+                    app:cardCornerRadius="@dimen/corner_radius_medium"
+                    app:cardElevation="@dimen/elevation_medium">
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/spacing_small">
+
+                        <ImageView
+                            android:layout_width="70dp"
+                            android:layout_height="55dp"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/ic_micasaapp"
+                            android:contentDescription="Logo de Mi Casa App" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/spacing_small"
+                            android:fontFamily="@font/poppins_bold"
+                            android:text="@string/app_name"
+                            android:textColor="@color/md_theme_onSurface"
+                            android:textSize="@dimen/text_size_headline" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Campo de búsqueda mejorado -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/spacing_medium"
+                    android:layout_marginVertical="@dimen/spacing_small"
+                    app:cardCornerRadius="@dimen/corner_radius_large"
+                    app:cardElevation="@dimen/elevation_small">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        app:startIconDrawable="@android:drawable/ic_menu_search"
+                        app:startIconTint="@color/md_theme_primary"
+                        app:boxStrokeWidth="0dp"
+                        app:boxStrokeWidthFocused="0dp"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/searchView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Buscar servicio o profesional"
+                            android:textSize="@dimen/text_size_large"
+                            android:fontFamily="@font/poppins_regular"
+                            android:padding="@dimen/spacing_small"
+                            android:inputType="text"
+                            android:imeOptions="actionSearch"
+                            android:maxLines="1"
+                            android:background="@null" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Carrusel de imágenes mejorado -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/carouselContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/spacing_medium"
+                    android:layout_marginVertical="@dimen/spacing_small"
+                    app:cardCornerRadius="@dimen/corner_radius_medium"
+                    app:cardElevation="@dimen/elevation_medium">
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <androidx.viewpager2.widget.ViewPager2
+                            android:id="@+id/viewPager"
+                            android:layout_width="match_parent"
+                            android:layout_height="200dp"
+                            android:layout_gravity="center" />
+
+                        <me.relex.circleindicator.CircleIndicator3
+                            android:id="@+id/indicator"
+                            android:layout_width="wrap_content"
+                            android:layout_height="24dp"
+                            android:layout_gravity="bottom|center"
+                            android:layout_marginBottom="@dimen/spacing_small"
+                            app:ci_drawable="@drawable/ic_indicator_active"
+                            app:ci_drawable_unselected="@drawable/ic_indicator_inactive" />
+                    </FrameLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Título "Categorías" -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:fontFamily="@font/poppins_bold"
-                    android:text="@string/app_name"
-                    android:textColor="@color/naranja_oscuro"
-                    android:textSize="25sp" />
-            </LinearLayout>
+                    android:layout_marginStart="@dimen/spacing_medium"
+                    android:layout_marginTop="@dimen/spacing_medium"
+                    android:layout_marginBottom="@dimen/spacing_small"
+                    android:text="Categorías"
+                    android:textColor="@color/md_theme_onBackground"
+                    android:textSize="@dimen/text_size_title"
+                    android:fontFamily="@font/poppins_semibold" />
 
-            <!-- Campo de búsqueda -->
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/searchView"
+                <!-- Mensaje de error para categorías -->
+                <TextView
+                    android:id="@+id/textErrorCategorias"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Buscar..."
-                    android:inputType="text" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_marginHorizontal="@dimen/spacing_medium"
+                    android:text="No se pudieron cargar las categorías"
+                    android:textColor="@color/errorColor"
+                    android:textAlignment="center"
+                    android:fontFamily="@font/poppins_medium"
+                    android:visibility="gone" />
 
-            <!-- Carrusel de imágenes -->
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <androidx.viewpager2.widget.ViewPager2
-                    android:id="@+id/viewPager"
+                <!-- RecyclerView para categorías mejorado -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView_categorias"
                     android:layout_width="match_parent"
-                    android:layout_height="250dp"
-                    android:layout_marginTop="10dp"
-                    android:gravity="center" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/spacing_small"
+                    android:layout_marginEnd="@dimen/spacing_small"
+                    android:clipToPadding="false"
+                    android:orientation="horizontal"
+                    android:paddingStart="@dimen/spacing_small"
+                    android:paddingEnd="@dimen/spacing_small"
+                    android:overScrollMode="never" />
 
-                <me.relex.circleindicator.CircleIndicator3
-                    android:id="@+id/indicator"
+                <!-- Título "Profesionales destacados" -->
+                <TextView
+                    android:id="@+id/tituloTrabajos"
                     android:layout_width="wrap_content"
-                    android:layout_height="20dp"
-                    android:layout_gravity="bottom|center" />
-            </FrameLayout>
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/spacing_medium"
+                    android:layout_marginTop="@dimen/spacing_large"
+                    android:layout_marginBottom="@dimen/spacing_small"
+                    android:text="Profesionales destacados"
+                    android:textColor="@color/md_theme_onBackground"
+                    android:textSize="@dimen/text_size_title"
+                    android:fontFamily="@font/poppins_semibold" />
 
-            <!-- RecyclerView para categorías -->
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView_categorias"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal" />
+                <!-- Mensaje de error para trabajos -->
+                <TextView
+                    android:id="@+id/textErrorTrabajos"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/spacing_medium"
+                    android:text="No se pudieron cargar los profesionales"
+                    android:textColor="@color/errorColor"
+                    android:textAlignment="center"
+                    android:fontFamily="@font/poppins_medium"
+                    android:visibility="gone" />
 
-            <!-- GridView para trabajos -->
-            <GridView
-                android:id="@+id/grid_lista_trabajos"
-                android:layout_width="match_parent"
-                android:layout_height="520dp"
-                android:numColumns="2"
-                android:stretchMode="columnWidth"
-                android:isScrollContainer="false"
-                android:nestedScrollingEnabled="true" />
+                <!-- GridView para trabajos mejorado -->
+                <GridView
+                    android:id="@+id/grid_lista_trabajos"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/spacing_small"
+                    android:layout_marginBottom="@dimen/spacing_medium"
+                    android:numColumns="2"
+                    android:stretchMode="columnWidth"
+                    android:verticalSpacing="@dimen/spacing_small"
+                    android:horizontalSpacing="@dimen/spacing_small"
+                    android:clipToPadding="false"
+                    android:paddingBottom="80dp"
+                    android:isScrollContainer="false"
+                    android:nestedScrollingEnabled="true" />
 
-        </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
-</androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <!-- FAB para iniciar nueva búsqueda -->
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/fabNuevaBusqueda"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center"
+        android:layout_marginBottom="@dimen/spacing_medium"
+        android:text="Buscar servicio"
+        android:textColor="@color/white"
+        android:fontFamily="@font/poppins_medium"
+        app:icon="@android:drawable/ic_menu_search"
+        app:iconTint="@color/white"
+        app:backgroundTint="@color/md_theme_primary" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
