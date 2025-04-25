@@ -1,6 +1,7 @@
 package com.example.micasaapp.ui.home
 
 import CarouselAdapter
+import android.app.Fragment
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -9,7 +10,6 @@ import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
