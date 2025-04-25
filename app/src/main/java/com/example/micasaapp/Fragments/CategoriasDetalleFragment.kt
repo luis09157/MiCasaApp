@@ -6,11 +6,11 @@ import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.SearchView
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.micasaapp.Adapter.SubCategoriaAdapter
+import com.example.micasaapp.Adapter.SubCategoriasAdapter
 import com.example.micasaapp.Api.ApiClient
 import com.example.micasaapp.Api.Config
 import com.example.micasaapp.Api.DataConfig
@@ -29,82 +29,92 @@ class CategoriasDetalleFragment : Fragment() {
     private var _binding: FragmentCategoriasDetalleBinding? = null
     private val binding get() = _binding!!
     private var listSubCategoriasMoshi: MutableList<SubCategoriasModel> = mutableListOf()
-    private lateinit var subCategoriaAdapter: SubCategoriaAdapter
+    private var subcategoriasFiltradas: MutableList<SubCategoriasModel> = mutableListOf()
+    private lateinit var subCategoriaAdapter: SubCategoriasAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentCategoriasDetalleBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+        return binding.root
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupRecyclerView()
+        setupSearchView()
         showLoadingAnimation()
         fetchSubCategorias()
-
-        return root
     }
 
-    private fun showLoadingAnimation() {
-        binding.lottieAnimationView.apply {
-            visibility = View.VISIBLE
-            setAnimation(R.raw.casa_loading) // Reemplaza con tu archivo JSON
-            playAnimation()
-        }
-        binding.contSubCategorias.visibility = View.GONE
-        binding.fragmentNoData.contNoData.visibility = View.GONE
-    }
-
-    private fun hideLoadingAnimation() {
-        binding.lottieAnimationView.apply {
-            visibility = View.GONE
-            cancelAnimation()
-        }
-        binding.contSubCategorias.visibility = View.VISIBLE
-        binding.fragmentNoData.contNoData.visibility = View.GONE
-    }
-
-    private fun showNoData() {
-        binding.lottieAnimationView.apply {
-            visibility = View.GONE
-            cancelAnimation()
-        }
-        binding.contSubCategorias.visibility = View.GONE
-        binding.fragmentNoData.contNoData.visibility = View.VISIBLE
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
-    override fun onResume() {
-        super.onResume()
-        view?.let {
-            it.isFocusableInTouchMode = true
-            it.requestFocus()
-            it.setOnKeyListener { _, keyCode, event ->
-                if (event.action == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
-                    UtilHelper.replaceFragment(requireContext(), CategoriasFragment())
-                    true
-                } else {
-                    false
-                }
+    private fun setupRecyclerView() {
+        subCategoriaAdapter = SubCategoriasAdapter(subcategoriasFiltradas) { subcategoria ->
+            try {
+                DataConfig.ID_SUBCATEGORIA = subcategoria.idSubCategoria
+                UtilHelper.replaceFragment(requireContext(), TrabajadoresFragment())
+            } catch (e: Exception) {
+                Log.e("CategoriasDetalleFragment", "Error al navegar", e)
+                MessageUtil.showErrorMessage(requireContext(), requireView(), "Error al cargar los trabajadores")
             }
         }
+        
+        binding.listSubCategoriaDetalle.apply {
+            layoutManager = GridLayoutManager(context, 2)
+            adapter = subCategoriaAdapter
+        }
+    }
+
+    private fun setupSearchView() {
+        binding.searchView.apply {
+            setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    clearFocus()
+                    return true
+                }
+
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    filtrarSubcategorias(newText)
+                    return true
+                }
+            })
+            
+            queryHint = "Buscar subcategoría..."
+            clearFocus()
+        }
+    }
+
+    private fun filtrarSubcategorias(query: String?) {
+        subcategoriasFiltradas.clear()
+        
+        if (query.isNullOrBlank()) {
+            subcategoriasFiltradas.addAll(listSubCategoriasMoshi)
+            binding.txtNoResults.visibility = View.GONE
+        } else {
+            val busqueda = query.lowercase().trim()
+            val resultados = listSubCategoriasMoshi.filter { subcategoria ->
+                subcategoria.nombreSubcategoria.lowercase().contains(busqueda)
+            }
+            subcategoriasFiltradas.addAll(resultados)
+            
+            binding.txtNoResults.apply {
+                visibility = if (resultados.isEmpty()) View.VISIBLE else View.GONE
+                text = "No se encontraron resultados para \"$query\""
+            }
+        }
+        
+        subCategoriaAdapter.updateData(subcategoriasFiltradas)
     }
 
     private fun fetchSubCategorias() {
-        Log.d("CategoriasDetalleFragment", "Iniciando fetchSubCategorias con ID_CATEGORIA: ${DataConfig.ID_CATEGORIA}")
         lifecycleScope.launch {
             try {
                 val apiClient = ApiClient(Config._URLApi)
                 val result = withContext(Dispatchers.IO) { 
                     apiClient.getSubCategoriasByCategoria(DataConfig.ID_CATEGORIA) 
                 }
-                Log.d("CategoriasDetalleFragment", "Subcategorías obtenidas: ${result.size}")
                 handleSubCategoriasResult(result)
             } catch (e: Exception) {
-                Log.e("CategoriasDetalleFragment", "Error al obtener subcategorías", e)
                 handleSubCategoriasError(e)
             }
         }
@@ -116,65 +126,78 @@ class CategoriasDetalleFragment : Fragment() {
         if (result.isNotEmpty()) {
             listSubCategoriasMoshi.clear()
             listSubCategoriasMoshi.addAll(result)
-            setupSubCategoriaAdapter(result)
-            setupSearchView()
-            binding.txtNoResults.visibility = View.GONE
+            subcategoriasFiltradas.clear()
+            subcategoriasFiltradas.addAll(result)
+            subCategoriaAdapter.updateData(subcategoriasFiltradas)
+            binding.contSubCategorias.visibility = View.VISIBLE
+            binding.fragmentNoData.contNoData.visibility = View.GONE
         } else {
             showNoData()
-            binding.fragmentNoData.textNoData.text = "No hay subcategorías disponibles"
         }
     }
 
     private fun handleSubCategoriasError(exception: Exception) {
         hideLoadingAnimation()
         val errorMessage = NetworkErrorUtil.handleNetworkError(exception)
-        Log.e("CategoriasDetalleFragment", "Error fetching subcategorias: $errorMessage", exception)
+        Log.e("CategoriasDetalleFragment", "Error: $errorMessage", exception)
         MessageUtil.showErrorMessage(requireContext(), requireView(), "Error al cargar las subcategorías")
         showNoData()
     }
 
-    private fun setupSubCategoriaAdapter(subCategorias: List<SubCategoriasModel>) {
-        Log.d("CategoriasDetalleFragment", "Configurando adapter con ${subCategorias.size} subcategorías")
-        
-        binding.listSubCategoriaDetalle.apply {
-            layoutManager = GridLayoutManager(requireContext(), 2)
-            adapter = SubCategoriaAdapter(
-                requireContext(),
-                subCategorias
-            ) { subcategoria ->
-                try {
-                    Log.d("CategoriasDetalleFragment", "Subcategoría seleccionada: ${subcategoria.nombreSubcategoria} (ID: ${subcategoria.idSubCategoria})")
-                    DataConfig.ID_SUBCATEGORIA = subcategoria.idSubCategoria
-                    Log.d("CategoriasDetalleFragment", "Navegando a TrabajadoresFragment con ID_SUBCATEGORIA: ${DataConfig.ID_SUBCATEGORIA}")
-                    UtilHelper.replaceFragment(requireContext(), TrabajadoresFragment())
-                } catch (e: Exception) {
-                    Log.e("CategoriasDetalleFragment", "Error al navegar a TrabajadoresFragment", e)
-                    MessageUtil.showErrorMessage(requireContext(), requireView(), "Error al cargar los trabajadores")
-                }
-            }.also { 
-                subCategoriaAdapter = it 
+    override fun onResume() {
+        super.onResume()
+        setupBackNavigation()
+    }
+
+    private fun setupBackNavigation() {
+        view?.let {
+            it.isFocusableInTouchMode = true
+            it.requestFocus()
+            it.setOnKeyListener { _, keyCode, event ->
+                if (event.action == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
+                    if (!binding.searchView.query.isNullOrEmpty()) {
+                        binding.searchView.setQuery("", false)
+                        return@setOnKeyListener true
+                    }
+                    UtilHelper.replaceFragment(requireContext(), CategoriasFragment())
+                    true
+                } else false
             }
         }
     }
 
-    private fun setupSearchView() {
-        binding.searchBar.setOnClickListener {
-            binding.searchView.show()
+    private fun showLoadingAnimation() {
+        binding.lottieAnimationView.apply {
+            visibility = View.VISIBLE
+            setAnimation(R.raw.casa_loading)
+            playAnimation()
         }
+        binding.contSubCategorias.visibility = View.GONE
+        binding.fragmentNoData.contNoData.visibility = View.GONE
+    }
 
-        binding.searchView.setupWithSearchBar(binding.searchBar)
-        binding.searchView.editText.setOnEditorActionListener { textView, actionId, event ->
-            val query = textView.text.toString().trim()
-            if (query.isNotEmpty()) {
-                subCategoriaAdapter.filter(query)
-                if (subCategoriaAdapter.getFilteredItemCount() == 0) {
-                    binding.txtNoResults.visibility = View.VISIBLE
-                } else {
-                    binding.txtNoResults.visibility = View.GONE
-                }
-            }
-            binding.searchView.hide()
-            false
+    private fun hideLoadingAnimation() {
+        binding.lottieAnimationView.apply {
+            visibility = View.GONE
+            cancelAnimation()
         }
+    }
+
+    private fun showNoData() {
+        binding.contSubCategorias.visibility = View.GONE
+        binding.fragmentNoData.apply {
+            contNoData.visibility = View.VISIBLE
+            textNoData.text = "No hay subcategorías disponibles"
+            buttonRetry.visibility = View.VISIBLE
+            buttonRetry.setOnClickListener {
+                showLoadingAnimation()
+                fetchSubCategorias()
+            }
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
