@@ -69,6 +69,12 @@ class TrabajosHomeAdapter(
                 toggleFavorito(position, viewHolder.btnMeGusta)
             }
 
+            // Configurar clic en el item completo
+            view.setOnClickListener {
+                onItemClick(trabajador)
+            }
+
+            // El botón de ver perfil también lleva al detalle
             viewHolder.viewProfile.setOnClickListener {
                 onItemClick(trabajador)
             }

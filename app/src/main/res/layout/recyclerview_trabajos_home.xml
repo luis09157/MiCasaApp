@@ -9,10 +9,14 @@
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
         app:cardCornerRadius="@dimen/corner_radius_medium"
-        app:cardElevation="@dimen/elevation_small"
-        app:strokeWidth="0dp"
-        app:cardPreventCornerOverlap="true"
+        app:cardElevation="4dp"
+        app:strokeWidth="1dp"
+        app:strokeColor="@color/md_theme_outlineVariant"
+        app:cardBackgroundColor="@color/md_theme_surfaceVariant"
         app:rippleColor="@color/md_theme_primaryContainer">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -35,6 +39,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="120dp"
                 android:background="@drawable/image_bottom_shadow"
+                android:alpha="0.8"
                 app:layout_constraintBottom_toBottomOf="@id/imagen"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -45,7 +50,8 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/spacing_medium"
                 android:textColor="@color/white"
-                android:textSize="@dimen/text_size_body"
+                android:textSize="14sp"
+                android:textStyle="bold"
                 app:chipBackgroundColor="@color/md_theme_primary"
                 app:chipIcon="@drawable/ic_star"
                 app:chipIconTint="@color/white"
@@ -77,6 +83,7 @@
                 android:id="@+id/infoContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/white"
                 android:paddingHorizontal="@dimen/spacing_medium"
                 android:paddingVertical="@dimen/spacing_medium"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -88,8 +95,9 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
-                    android:fontFamily="@font/poppins_bold"
                     android:maxLines="1"
+                    android:textAppearance="@style/TextAppearance.MiCasaApp.Headline2"
+                    android:textStyle="bold"
                     android:textColor="@color/md_theme_onSurface"
                     android:textSize="20sp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -110,10 +118,9 @@
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/txtProfecion"
-                        style="@style/CustomChipStyle"
+                        style="@style/Widget.MiCasaApp.Chip"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/text_size_body"
                         tools:text="Arquitecto" />
 
                 </com.google.android.material.chip.ChipGroup>
@@ -123,7 +130,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="@dimen/spacing_medium"
-                    android:background="@color/md_theme_outlineVariant"
+                    android:background="@color/md_theme_outline"
                     app:layout_constraintTop_toBottomOf="@id/chipGroupServicios" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -149,10 +156,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/spacing_small"
                         android:ellipsize="end"
-                        android:fontFamily="@font/poppins_regular"
                         android:maxLines="1"
+                        android:textAppearance="@style/TextAppearance.MiCasaApp.Body1"
                         android:textColor="@color/md_theme_onSurfaceVariant"
-                        android:textSize="@dimen/text_size_body"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@id/viewProfile"
                         app:layout_constraintStart_toEndOf="@id/icLocation"
@@ -161,19 +167,14 @@
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/viewProfile"
-                        style="@style/Widget.MaterialComponents.Button.TextButton"
+                        style="@style/Widget.MiCasaApp.Button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/poppins_medium"
-                        android:minWidth="0dp"
-                        android:minHeight="40dp"
                         android:text="Ver perfil"
-                        android:textAllCaps="false"
                         android:textColor="@color/md_theme_primary"
-                        android:textSize="@dimen/text_size_body"
+                        android:backgroundTint="@color/md_theme_primaryContainer"
                         app:icon="@drawable/ic_arrow_right"
                         app:iconGravity="end"
-                        app:iconPadding="4dp"
                         app:iconTint="@color/md_theme_primary"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"

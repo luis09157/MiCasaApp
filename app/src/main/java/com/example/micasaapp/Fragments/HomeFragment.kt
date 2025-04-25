@@ -404,12 +404,6 @@ class HomeFragment : Fragment() {
     }
 
     private fun initListeners() {
-        binding.gridListaTrabajos.setOnItemClickListener { _, _, i, _ ->
-            TrabajadorDetalleFragment._FLAG_HOME = true
-            TrabajadorDetalleFragment._TRABAJADOR_GLOBAL = trabajosList[i]
-            UtilHelper.replaceFragment(requireContext(), TrabajadorDetalleFragment())
-        }
-        
         binding.fragmentNoData.buttonRetry?.setOnClickListener {
             retryCount = 0
             loadAllData()

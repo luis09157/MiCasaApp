@@ -1,96 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Colores de tema principal -->
-    <color name="md_theme_primary">#FF4081</color> <!-- Rosa vibrante -->
-    <color name="md_theme_onPrimary">#000</color> <!-- Blanco para contraste en el texto -->
-    <color name="md_theme_primaryContainer">#FBE9E7</color> <!-- Rosa claro -->
-    <color name="md_theme_onPrimaryContainer">#4A1A24</color> <!-- Rojo oscuro -->
-    <color name="md_theme_secondary">#FFB74D</color> <!-- Naranja cálido -->
-    <color name="md_theme_onSecondary">#000000</color> <!-- Negro para contraste en el texto -->
-    <color name="md_theme_secondaryContainer">#FFF3E0</color> <!-- Naranja claro -->
-    <color name="md_theme_onSecondaryContainer">#4E2A16</color> <!-- Marrón oscuro -->
-    <color name="md_theme_tertiary">#4CAF50</color> <!-- Verde vibrante -->
-    <color name="md_theme_onTertiary">#FFFFFF</color> <!-- Blanco para contraste en el texto -->
-    <color name="md_theme_tertiaryContainer">#C8E6C9</color> <!-- Verde claro -->
-    <color name="md_theme_onTertiaryContainer">#1B5E20</color> <!-- Verde oscuro -->
-    <color name="md_theme_error">#D32F2F</color> <!-- Rojo intenso para errores -->
-    <color name="md_theme_onError">#FFFFFF</color> <!-- Blanco para contraste en el texto -->
-    <color name="md_theme_errorContainer">#FFEBEE</color> <!-- Rosa pálido para errores -->
-    <color name="md_theme_onErrorContainer">#B71C1C</color> <!-- Rojo oscuro -->
-    <color name="md_theme_background">#FAF9F6</color> <!-- Gris muy claro -->
-    <color name="md_theme_onBackground">#3E2723</color> <!-- Marrón oscuro para el texto -->
-    <color name="md_theme_surface">#FAF9F6</color> <!-- Gris muy claro para superficies -->
-    <color name="md_theme_onSurface">#3E2723</color> <!-- Marrón oscuro para el texto -->
-    <color name="md_theme_surfaceVariant">#FBE9E7</color> <!-- Rosa claro para variantes de superficie -->
-    <color name="md_theme_onSurfaceVariant">#4A1A24</color> <!-- Rojo oscuro para el texto -->
-    <color name="md_theme_outline">#BDBDBD</color> <!-- Gris medio para contornos -->
-    <color name="md_theme_outlineVariant">#E0E0E0</color> <!-- Gris muy claro para variantes de contornos -->
-    <color name="md_theme_scrim">#000000</color> <!-- Negro para sombras -->
-    <color name="md_theme_inverseSurface">#4A1A24</color> <!-- Rojo oscuro para superficie inversa -->
-    <color name="md_theme_inverseOnSurface">#FBE9E7</color> <!-- Rosa claro para texto en superficie inversa -->
-    <color name="md_theme_inversePrimary">#F8BBD0</color> <!-- Rosa claro para el primario inverso -->
-    <color name="md_theme_primaryFixed">#FBE9E7</color> <!-- Rosa claro fijo -->
-    <color name="md_theme_onPrimaryFixed">#4A1A24</color> <!-- Rojo oscuro para texto en rosa claro fijo -->
-    <color name="md_theme_primaryFixedDim">#F8BBD0</color> <!-- Rosa más tenue para primario fijo dim -->
-    <color name="md_theme_onPrimaryFixedVariant">#3C0D17</color> <!-- Rojo más oscuro para variante fija -->
-    <color name="md_theme_secondaryFixed">#FFF3E0</color> <!-- Naranja claro fijo -->
-    <color name="md_theme_onSecondaryFixed">#4E2A16</color> <!-- Marrón oscuro para texto en naranja claro fijo -->
-    <color name="md_theme_secondaryFixedDim">#F5C8A0</color> <!-- Naranja más tenue para secundario fijo dim -->
-    <color name="md_theme_onSecondaryFixedVariant">#3F1A0D</color> <!-- Marrón más oscuro para variante fija -->
-    <color name="md_theme_tertiaryFixed">#C8E6C9</color> <!-- Verde claro fijo -->
-    <color name="md_theme_onTertiaryFixed">#1B5E20</color> <!-- Verde oscuro para texto en verde claro fijo -->
-    <color name="md_theme_tertiaryFixedDim">#A5D6A7</color> <!-- Verde más tenue para terciario fijo dim -->
-    <color name="md_theme_onTertiaryFixedVariant">#2C6C40</color> <!-- Verde más oscuro para variante fija -->
-    <color name="md_theme_surfaceDim">#E0E0E0</color> <!-- Gris claro para superficie dim -->
-    <color name="md_theme_surfaceBright">#FAF9F6</color> <!-- Gris muy claro para superficie brillante -->
-    <color name="md_theme_surfaceContainerLowest">#FFFFFF</color> <!-- Blanco para contenedor de superficie más bajo -->
-    <color name="md_theme_surfaceContainerLow">#FFF3E0</color> <!-- Naranja claro para contenedor de superficie bajo -->
-    <color name="md_theme_surfaceContainer">#FBE9E7</color> <!-- Rosa claro para contenedor de superficie -->
-    <color name="md_theme_surfaceContainerHigh">#F5C8A0</color> <!-- Naranja más tenue para contenedor de superficie alto -->
-    <color name="md_theme_surfaceContainerHighest">#F8BBD0</color> <!-- Rosa claro más tenue para contenedor de superficie más alto -->
-    <color name="md_theme_primary_mediumContrast">#3C0D17</color> <!-- Rojo oscuro para contraste medio -->
-    <color name="md_theme_onPrimary_mediumContrast">#FFFFFF</color> <!-- Blanco para texto en rojo oscuro medio -->
-    <color name="md_theme_primaryContainer_mediumContrast">#F8BBD0</color> <!-- Rosa claro para contenedor de primario medio -->
-    <color name="md_theme_onPrimaryContainer_mediumContrast">#4A1A24</color> <!-- Rojo oscuro para texto en contenedor de primario medio -->
-    <color name="md_theme_secondary_mediumContrast">#4E2A16</color> <!-- Marrón oscuro para contraste medio -->
-    <color name="md_theme_onSecondary_mediumContrast">#FFFFFF</color> <!-- Blanco para texto en marrón oscuro medio -->
-    <color name="md_theme_secondaryContainer_mediumContrast">#F5C8A0</color> <!-- Naranja más tenue para contenedor de secundario medio -->
-    <color name="md_theme_onSecondaryContainer_mediumContrast">#4E2A16</color> <!-- Marrón oscuro para texto en contenedor de secundario medio -->
-    <color name="md_theme_tertiary_mediumContrast">#1B5E20</color> <!-- Verde oscuro para contraste medio -->
-    <color name="md_theme_onTertiary_mediumContrast">#FFFFFF</color> <!-- Blanco para texto en verde oscuro medio -->
-    <color name="md_theme_tertiaryContainer_mediumContrast">#A5D6A7</color> <!-- Verde más tenue para contenedor de terciario medio -->
-    <color name="md_theme_onTertiaryContainer_mediumContrast">#1B5E20</color> <!-- Verde oscuro para texto en contenedor de terciario medio -->
-    <color name="md_theme_error_mediumContrast">#D32F2F</color> <!-- Rojo intenso para error medio -->
-    <color name="md_theme_onError_mediumContrast">#FFFFFF</color> <!-- Blanco para texto en rojo intenso medio -->
-    <color name="md_theme_errorContainer_mediumContrast">#FFEBEE</color> <!-- Rosa pálido para contenedor de error medio -->
-    <color name="md_theme_onErrorContainer_mediumContrast">#B71C1C</color> <!-- Rojo oscuro para texto en contenedor de error medio -->
-    <color name="md_theme_background_mediumContrast">#FAF9F6</color> <!-- Gris muy claro para fondo medio -->
-    <color name="md_theme_onBackground_mediumContrast">#3E2723</color> <!-- Marrón oscuro para texto en fondo medio -->
-    <color name="md_theme_surface_mediumContrast">#FAF9F6</color> <!-- Gris muy claro para superficie media -->
-    <color name="md_theme_onSurface_mediumContrast">#3E2723</color> <!-- Marrón oscuro para texto en superficie media -->
-    <color name="md_theme_surfaceVariant_mediumContrast">#FBE9E7</color> <!-- Rosa claro para variante de superficie media -->
-    <color name="md_theme_onSurfaceVariant_mediumContrast">#4A1A24</color> <!-- Rojo oscuro para texto en variante de superficie media -->
-    <color name="md_theme_outline_mediumContrast">#BDBDBD</color> <!-- Gris medio para contorno medio -->
-    <color name="md_theme_outlineVariant_mediumContrast">#E0E0E0</color> <!-- Gris muy claro para variante de contorno medio -->
-    <color name="md_theme_scrim_mediumContrast">#000000</color> <!-- Negro para sombras medianas -->
-    <color name="md_theme_inverseSurface_mediumContrast">#4A1A24</color> <!-- Rojo oscuro para superficie inversa media -->
-    <color name="md_theme_inverseOnSurface_mediumContrast">#FBE9E7</color> <!-- Rosa claro para texto en superficie inversa media -->
-    <color name="md_theme_inversePrimary_mediumContrast">#F8BBD0</color> <!-- Rosa claro para primario inverso medio -->
-
-    <!-- Colores de compatibilidad con versiones anteriores -->
+    <!-- Colores principales basados en naranja -->
+    <color name="md_theme_primary">#F4511E</color>          <!-- Naranja principal -->
+    <color name="md_theme_onPrimary">#FFFFFF</color>
+    <color name="md_theme_primaryContainer">#FF8A65</color> <!-- Naranja más claro para contenedores -->
+    <color name="md_theme_onPrimaryContainer">#FFFFFF</color>
+    
+    <!-- Colores secundarios complementarios -->
+    <color name="md_theme_secondary">#D84315</color>        <!-- Naranja más oscuro -->
+    <color name="md_theme_onSecondary">#FFFFFF</color>
+    <color name="md_theme_secondaryContainer">#FF5722</color>
+    <color name="md_theme_onSecondaryContainer">#FFFFFF</color>
+    
+    <!-- Colores terciarios para acentos -->
+    <color name="md_theme_tertiary">#BF360C</color>         <!-- Naranja muy oscuro para énfasis -->
+    <color name="md_theme_onTertiary">#FFFFFF</color>
+    <color name="md_theme_tertiaryContainer">#E64A19</color>
+    <color name="md_theme_onTertiaryContainer">#FFFFFF</color>
+    
+    <!-- Colores de superficie con mejor contraste -->
+    <color name="md_theme_surface">#FFFFFF</color>
+    <color name="md_theme_onSurface">#263238</color>        <!-- Gris muy oscuro para texto -->
+    <color name="md_theme_surfaceVariant">#ECEFF1</color>   <!-- Gris muy claro para fondos alternos -->
+    <color name="md_theme_onSurfaceVariant">#37474F</color> <!-- Gris oscuro para texto secundario -->
+    
+    <!-- Colores de error -->
+    <color name="md_theme_error">#D32F2F</color>
+    <color name="md_theme_onError">#FFFFFF</color>
+    <color name="md_theme_errorContainer">#EF5350</color>
+    <color name="md_theme_onErrorContainer">#FFFFFF</color>
+    
+    <!-- Colores de borde -->
+    <color name="md_theme_outline">#546E7A</color>          <!-- Gris azulado para bordes -->
+    <color name="md_theme_outlineVariant">#90A4AE</color>   <!-- Gris azulado más claro -->
+    
+    <!-- Colores de éxito -->
+    <color name="md_theme_success">#43A047</color>
+    <color name="md_theme_onSuccess">#FFFFFF</color>
+    <color name="md_theme_successContainer">#66BB6A</color>
+    <color name="md_theme_onSuccessContainer">#FFFFFF</color>
+    
+    <!-- Colores de fondo -->
+    <color name="md_theme_background">#FAFAFA</color>       <!-- Casi blanco para fondo -->
+    <color name="md_theme_onBackground">#263238</color>     <!-- Gris muy oscuro para texto -->
+    
+    <!-- Colores adicionales -->
+    <color name="md_theme_shadow">#000000</color>
+    <color name="md_theme_surfaceTint">#F4511E</color>      <!-- Naranja principal -->
+    <color name="md_theme_inverseSurface">#263238</color>
+    <color name="md_theme_inverseOnSurface">#FFFFFF</color>
+    <color name="md_theme_inversePrimary">#FFCCBC</color>   <!-- Naranja muy claro -->
+    
+    <!-- Color de sistema -->
+    <color name="md_theme_scrim">#000000</color>
+    
+    <!-- Colores base -->
     <color name="colorPrimary">@color/md_theme_primary</color>
-    <color name="colorPrimaryDark">@color/md_theme_primary_mediumContrast</color>
-    <color name="colorAccent">@color/md_theme_secondary</color>
+    <color name="colorPrimaryDark">@color/md_theme_secondary</color>
+    <color name="colorAccent">@color/md_theme_tertiary</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
 
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <!-- Color de fondo general -->
+    <color name="background_color">#FAFAFA</color>
 
-    <color name="background_color">#ECECEC</color>
+    <!-- Estados -->
+    <color name="successColor">@color/md_theme_success</color>
+    <color name="infoColor">#1976D2</color>
+    <color name="errorColor">@color/md_theme_error</color>
 
-    <color name="successColor">#4CAF50</color>
-    <color name="infoColor">#2196F3</color>
-    <color name="errorColor">#F44336</color>
-
-    <color name="naranja_oscuro">#C46B00</color>
-    <color name="naranja_claro">#EA8000</color>
+    <!-- Colores de acento naranja -->
+    <color name="naranja_oscuro">#D84315</color>
+    <color name="naranja_claro">#F4511E</color>
 </resources>
