@@ -512,7 +512,14 @@ class HomeFragment : Fragment() {
         binding.textErrorTrabajos.visibility = View.GONE
         binding.gridListaTrabajos.visibility = View.VISIBLE
         
-        val adapter = TrabajosHomeAdapter(requireContext(), trabajosList)
+        val adapter = TrabajosHomeAdapter(
+            context = requireContext(),
+            trabajos = trabajosList
+        ) { trabajador ->
+            TrabajadorDetalleFragment._FLAG_HOME = true
+            TrabajadorDetalleFragment._TRABAJADOR_GLOBAL = trabajador
+            UtilHelper.replaceFragment(requireContext(), TrabajadorDetalleFragment())
+        }
         binding.gridListaTrabajos.adapter = adapter
     }
 

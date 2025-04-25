@@ -1,6 +1,7 @@
 package com.example.micasaapp.Adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,104 +10,144 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.example.micasaapp.Model.TrabajadorModel
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.ninodev.micasaapp.R
-import kotlin.random.Random
 
-class TrabajosHomeAdapter(private val context: Context, private var trabajosHome: List<TrabajadorModel>) : BaseAdapter() {
-    private var filteredTrabajosHome: List<TrabajadorModel> = trabajosHome
-    private val favoritos = mutableSetOf<Int>() // Simular favoritos
+class TrabajosHomeAdapter(
+    private val context: Context,
+    private val trabajos: List<TrabajadorModel>,
+    private val onItemClick: (TrabajadorModel) -> Unit
+) : BaseAdapter() {
+    private val TAG = "TrabajosHomeAdapter"
+    private var filteredTrabajosHome: List<TrabajadorModel> = trabajos
+    private val favoritos = mutableSetOf<Int>()
 
-    fun filter(query: String) {
-        filteredTrabajosHome = if (query.isBlank()) {
-            trabajosHome
-        } else {
-            trabajosHome.filter { it.nombreCompleto.contains(query, ignoreCase = true) }
-        }
-        notifyDataSetChanged()
-    }
+    override fun getCount(): Int = filteredTrabajosHome.size
 
-    override fun getCount(): Int {
-        return filteredTrabajosHome.size
-    }
+    override fun getItem(position: Int): Any = filteredTrabajosHome[position]
 
-    override fun getView(position: Int, view: View?, viewGroup: ViewGroup?): View {
+    override fun getItemId(position: Int): Long = position.toLong()
+
+    override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val viewHolder: ViewHolder
-        val rowView: View?
+        val view: View
 
-        if (view == null) {
-            rowView = LayoutInflater.from(context).inflate(R.layout.recyclerview_trabajos_home, viewGroup, false)
-            viewHolder = ViewHolder(rowView)
-            rowView.tag = viewHolder
+        if (convertView == null) {
+            view = LayoutInflater.from(context).inflate(R.layout.recyclerview_trabajos_home, parent, false)
+            viewHolder = ViewHolder(view)
+            view.tag = viewHolder
         } else {
-            rowView = view
-            viewHolder = rowView.tag as ViewHolder
+            view = convertView
+            viewHolder = view.tag as ViewHolder
         }
 
         val trabajador = filteredTrabajosHome[position]
         
-        // Configurar datos del trabajador
-        viewHolder.txtNombreTrabajador.text = trabajador.nombreCompleto
-        viewHolder.txtProfecion.text = trabajador.categorias
-        viewHolder.txtDireccion.text = trabajador.direccion
-
-        // Añadir calificación (simulada)
-        val rating = 4.0 + (Random.nextDouble() * 1.0)
-        viewHolder.chipRating.text = String.format("%.1f", rating)
-
-        // Usar Glide para cargar la imagen
-        Glide.with(context)
-            .load(trabajador.imagenPerfil)
-            .placeholder(R.drawable.ic_image_placeholder)
-            .error(R.drawable.ic_image_error)
-            .centerCrop()
-            .into(viewHolder.imagen)
-
-        // Configurar botón favorito
-        val isFavorito = favoritos.contains(position)
-        configureHeartButton(viewHolder.btnMeGusta, isFavorito)
-        
-        viewHolder.btnMeGustaContainer.setOnClickListener {
-            // Alterna estado de favorito
-            if (isFavorito) {
-                favoritos.remove(position)
-            } else {
-                favoritos.add(position)
+        try {
+            // Configurar datos básicos
+            viewHolder.apply {
+                txtNombreTrabajador.text = trabajador.nombreCompleto
+                txtProfecion.text = trabajador.categorias
+                txtDireccion.text = trabajador.direccion
+                chipRating.text = String.format("%.1f★", trabajador.calificacion)
             }
-            configureHeartButton(viewHolder.btnMeGusta, !isFavorito)
-            Toast.makeText(context, if (!isFavorito) "Añadido a favoritos" else "Eliminado de favoritos", Toast.LENGTH_SHORT).show()
+
+            // Configurar imagen
+            loadImage(trabajador, viewHolder.imagen)
+
+            // Configurar botón favorito
+            val isFavorito = favoritos.contains(position)
+            configureHeartButton(viewHolder.btnMeGusta, isFavorito)
+            
+            // Configurar listeners
+            viewHolder.btnMeGustaContainer.setOnClickListener {
+                toggleFavorito(position, viewHolder.btnMeGusta)
+            }
+
+            viewHolder.viewProfile.setOnClickListener {
+                onItemClick(trabajador)
+            }
+
+        } catch (e: Exception) {
+            Log.e(TAG, "Error configurando vista para trabajador: ${trabajador.nombreCompleto}", e)
+            handleError(viewHolder, trabajador)
         }
 
-        // Configurar el botón de ver perfil
-        viewHolder.viewProfile.setOnClickListener {
-            // Implementar navegación al perfil
-            Toast.makeText(context, "Ver perfil de ${trabajador.nombreCompleto}", Toast.LENGTH_SHORT).show()
-        }
+        return view
+    }
 
-        return rowView!!
+    private fun loadImage(trabajador: TrabajadorModel, imageView: ImageView) {
+        val imageUrl = trabajador.imagenPerfil.takeIf { it.isNotEmpty() } 
+            ?: trabajador.imagenTrabajo
+
+        Log.d(TAG, "Cargando imagen para ${trabajador.nombreCompleto}: $imageUrl")
+
+        val requestOptions = RequestOptions()
+            .placeholder(R.drawable.placeholder_image)
+            .error(R.drawable.error_image)
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .centerCrop()
+
+        try {
+            Glide.with(context)
+                .load(imageUrl)
+                .apply(requestOptions)
+                .into(imageView)
+        } catch (e: Exception) {
+            Log.e(TAG, "Error cargando imagen para ${trabajador.nombreCompleto}: ${e.message}")
+            imageView.setImageResource(R.drawable.error_image)
+        }
+    }
+
+    private fun handleError(viewHolder: ViewHolder, trabajador: TrabajadorModel) {
+        viewHolder.apply {
+            imagen.setImageResource(R.drawable.error_image)
+            txtNombreTrabajador.text = trabajador.nombreCompleto.takeIf { it.isNotEmpty() } 
+                ?: "Nombre no disponible"
+            txtProfecion.text = trabajador.categorias.takeIf { it.isNotEmpty() } 
+                ?: "Profesión no disponible"
+            txtDireccion.text = trabajador.direccion.takeIf { it.isNotEmpty() } 
+                ?: "Dirección no disponible"
+            chipRating.text = "0.0★"
+        }
+    }
+
+    private fun toggleFavorito(position: Int, imageView: ImageView) {
+        val isFavorito = favoritos.contains(position)
+        if (isFavorito) {
+            favoritos.remove(position)
+            configureHeartButton(imageView, false)
+            Toast.makeText(context, "Eliminado de favoritos", Toast.LENGTH_SHORT).show()
+        } else {
+            favoritos.add(position)
+            configureHeartButton(imageView, true)
+            Toast.makeText(context, "Añadido a favoritos", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun configureHeartButton(imageView: ImageView, isFavorite: Boolean) {
+        imageView.setImageResource(
+            if (isFavorite) R.drawable.ic_corazon_filled else R.drawable.ic_corazon
+        )
         if (isFavorite) {
-            imageView.setImageResource(R.drawable.ic_corazon_filled)
             imageView.setColorFilter(context.getColor(R.color.md_theme_primary))
         } else {
-            imageView.setImageResource(R.drawable.ic_corazon)
             imageView.clearColorFilter()
         }
     }
 
-    override fun getItem(position: Int): Any {
-        return filteredTrabajosHome[position]
-    }
-
-    override fun getItemId(position: Int): Long {
-        return position.toLong()
+    fun filter(query: String) {
+        filteredTrabajosHome = if (query.isBlank()) {
+            trabajos
+        } else {
+            trabajos.filter { it.nombreCompleto.contains(query, ignoreCase = true) }
+        }
+        notifyDataSetChanged()
     }
 
     private class ViewHolder(view: View) {
