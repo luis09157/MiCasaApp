@@ -61,9 +61,10 @@ class TrabajosHomeAdapter(private val context: Context, private var trabajosHome
 
         // Usar Glide para cargar la imagen
         Glide.with(context)
-            .load(trabajador.imagenTrabajo)
-            .placeholder(R.drawable.placeholder_image)
-            .error(R.drawable.error_image)
+            .load(trabajador.imagenPerfil)
+            .placeholder(R.drawable.ic_image_placeholder)
+            .error(R.drawable.ic_image_error)
+            .centerCrop()
             .into(viewHolder.imagen)
 
         // Configurar botón favorito

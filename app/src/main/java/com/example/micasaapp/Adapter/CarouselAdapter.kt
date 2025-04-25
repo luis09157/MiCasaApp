@@ -49,8 +49,9 @@ class CarouselAdapter(private var banners: List<BannerModel>) :
             // Aplicar efecto de imagen con bordes redondeados
             Glide.with(binding.imageView.context)
                 .load(banner.imagenTrabajo)
-                .placeholder(R.drawable.placeholder_image)
-                .error(R.drawable.error_image)
+                .placeholder(R.drawable.ic_image_placeholder)
+                .error(R.drawable.ic_image_error)
+                .centerCrop()
                 .into(binding.imageView)
             
             // Configurar título

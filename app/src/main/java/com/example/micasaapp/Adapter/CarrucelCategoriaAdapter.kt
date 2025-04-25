@@ -62,9 +62,9 @@ class CarrucelCategoriaAdapter(
             
             Glide.with(image)
                 .load(categoria.imagenCategoria)
-                .apply(requestOptions)
-                .placeholder(R.drawable.placeholder_image)
-                .error(R.drawable.error_image)
+                .placeholder(R.drawable.ic_image_placeholder)
+                .error(R.drawable.ic_image_error)
+                .centerCrop()
                 .into(image)
                 
             name.text = categoria.nombreCategoria

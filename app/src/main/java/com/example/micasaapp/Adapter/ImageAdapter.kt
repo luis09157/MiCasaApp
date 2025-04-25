@@ -31,8 +31,9 @@ class ImageAdapter(private val images: List<FotoTrabajoModel>) : RecyclerView.Ad
         fun bind(fotoTrabajo: FotoTrabajoModel) {
             Glide.with(imageView.context)
                 .load(fotoTrabajo.url)
-                .placeholder(R.drawable.placeholder_image) // Opcional: Añade un drawable de placeholder si deseas
-                .error(R.drawable.error_image) // Opcional: Añade un drawable de error si deseas
+                .placeholder(R.drawable.ic_image_placeholder)
+                .error(R.drawable.ic_image_error)
+                .centerCrop()
                 .into(imageView)
         }
     }
