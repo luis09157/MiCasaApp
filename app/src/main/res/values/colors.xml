@@ -72,4 +72,6 @@
     <!-- Colores de acento naranja -->
     <color name="naranja_oscuro">#D84315</color>
     <color name="naranja_claro">#F4511E</color>
+
+    <color name="md_theme_primary_mediumContrast">#3366CC</color>
 </resources>

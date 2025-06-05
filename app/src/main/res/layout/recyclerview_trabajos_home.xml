@@ -12,11 +12,11 @@
         android:clickable="true"
         android:focusable="true"
         android:foreground="?attr/selectableItemBackground"
-        app:cardCornerRadius="@dimen/corner_radius_medium"
+        app:cardCornerRadius="16dp"
         app:cardElevation="4dp"
         app:strokeWidth="1dp"
         app:strokeColor="@color/md_theme_outlineVariant"
-        app:cardBackgroundColor="@color/md_theme_surfaceVariant"
+        app:cardBackgroundColor="@color/white"
         app:rippleColor="@color/md_theme_primaryContainer">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -39,44 +39,30 @@
                 android:layout_width="match_parent"
                 android:layout_height="120dp"
                 android:background="@drawable/image_bottom_shadow"
-                android:alpha="0.8"
+                android:alpha="0.7"
                 app:layout_constraintBottom_toBottomOf="@id/imagen"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chipRating"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/spacing_medium"
-                android:textColor="@color/white"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                app:chipBackgroundColor="@color/md_theme_primary"
-                app:chipIcon="@drawable/ic_star"
-                app:chipIconTint="@color/white"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:text="4.8" />
-
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/btnMeGustaContainer"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
                 android:layout_margin="@dimen/spacing_medium"
                 app:cardBackgroundColor="@color/white"
-                app:cardCornerRadius="24dp"
-                app:cardElevation="@dimen/elevation_medium"
+                app:cardCornerRadius="22dp"
+                app:cardElevation="2dp"
                 app:rippleColor="@color/md_theme_primaryContainer"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
                     android:id="@+id/btnMeGusta"
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/ic_corazon" />
+                    android:src="@drawable/ic_corazon"
+                    android:tint="@color/md_theme_primary" />
             </com.google.android.material.card.MaterialCardView>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -110,7 +96,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/spacing_small"
-                    app:chipSpacingHorizontal="@dimen/spacing_small"
+                    app:chipSpacingHorizontal="4dp"
                     app:singleLine="true"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -121,6 +107,8 @@
                         style="@style/Widget.MiCasaApp.Chip"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:backgroundTint="@color/md_theme_primaryContainer"
+                        android:textColor="@color/md_theme_primary"
                         tools:text="Arquitecto" />
 
                 </com.google.android.material.chip.ChipGroup>
@@ -130,7 +118,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="@dimen/spacing_medium"
-                    android:background="@color/md_theme_outline"
+                    android:background="@color/md_theme_outlineVariant"
                     app:layout_constraintTop_toBottomOf="@id/chipGroupServicios" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -171,11 +159,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Ver perfil"
-                        android:textColor="@color/md_theme_primary"
-                        android:backgroundTint="@color/md_theme_primaryContainer"
+                        android:textColor="@color/white"
+                        android:backgroundTint="@color/md_theme_primary"
                         app:icon="@drawable/ic_arrow_right"
                         app:iconGravity="end"
-                        app:iconTint="@color/md_theme_primary"
+                        app:iconTint="@color/white"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />

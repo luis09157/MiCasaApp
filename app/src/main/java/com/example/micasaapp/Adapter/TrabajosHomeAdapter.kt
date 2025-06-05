@@ -54,7 +54,6 @@ class TrabajosHomeAdapter(
                 txtNombreTrabajador.text = trabajador.nombreCompleto
                 txtProfecion.text = trabajador.categorias
                 txtDireccion.text = trabajador.direccion
-                chipRating.text = String.format("%.1f★", trabajador.calificacion)
             }
 
             // Configurar imagen
@@ -119,7 +118,6 @@ class TrabajosHomeAdapter(
                 ?: "Profesión no disponible"
             txtDireccion.text = trabajador.direccion.takeIf { it.isNotEmpty() } 
                 ?: "Dirección no disponible"
-            chipRating.text = "0.0★"
         }
     }
 
@@ -163,7 +161,6 @@ class TrabajosHomeAdapter(
         val imagen: ImageView = view.findViewById(R.id.imagen)
         val btnMeGusta: ImageView = view.findViewById(R.id.btnMeGusta)
         val btnMeGustaContainer: View = view.findViewById(R.id.btnMeGustaContainer)
-        val chipRating: Chip = view.findViewById(R.id.chipRating)
         val viewProfile: MaterialButton = view.findViewById(R.id.viewProfile)
         val chipGroupServicios: ChipGroup = view.findViewById(R.id.chipGroupServicios)
     }
