@@ -9,6 +9,7 @@ import com.squareup.moshi.Types
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import okhttp3.MediaType.Companion.toMediaType
 
 class ApiClient(private val baseUrl: String) {
 
@@ -103,6 +104,15 @@ class ApiClient(private val baseUrl: String) {
         return executeRequest(request, ::parseTrabajadores)
     }
 
+    fun login(user: String, pass: String): LoginResponse {
+        val url = "$baseUrl/login"
+        val json = """{"user":"$user","pass":"$pass"}"""  // Remove the backslashes
+        val request = Request.Builder()
+            .url(url)
+            .post(okhttp3.RequestBody.create("application/json".toMediaType(), json))
+            .build()
+        return executeRequest(request, ::parseLoginResponse)
+    }
     private fun <T> executeRequest(request: Request, parseFunction: (String?) -> T): T {
         client.newCall(request).execute().use { response ->
             if (!response.isSuccessful) {
@@ -182,6 +192,17 @@ class ApiClient(private val baseUrl: String) {
             imagenTrabajo = "",
             descripcion = "",
             imagenPerfil = ""
+        )
+    }
+
+    private fun parseLoginResponse(responseBody: String?): LoginResponse {
+        val adapter: JsonAdapter<LoginResponse> = moshi.adapter(LoginResponse::class.java)
+        return adapter.fromJson(responseBody.orEmpty()) ?: LoginResponse(
+            idUsuario = 0,
+            nombre = "",
+            apPaterno = "",
+            apMaterno = "",
+            token = ""
         )
     }
 }
